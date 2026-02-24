@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Platform, StyleSheet } from 'react-native';
+import { Platform, StyleSheet, TouchableOpacity } from 'react-native';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
@@ -87,6 +87,11 @@ const styles = StyleSheet.create({
   stepContainer: {
     gap: 8,
     marginBottom: 8,
+  },
+  poiDetailButton: {
+    alignSelf: 'flex-start',
+    paddingVertical: 8,
+    paddingHorizontal: 12,
   },
   reactLogo: {
     height: 178,
