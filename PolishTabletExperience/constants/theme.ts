@@ -1,6 +1,8 @@
 /**
  * PolishTablet Experience – colors and typography definitions
  * Based on the main colors, era colors, quiz result colors and typography definitions in the design draft.
+ * PolishTablet Experience – colors and typography definitions
+ * Based on the main colors, era colors, quiz result colors and typography definitions in the design draft.
  */
 
 import { Platform } from 'react-native';
@@ -14,7 +16,6 @@ export const MainColors = {
   textGrey: '#A9A9A9',
   secondaryGrey: '#9D9D9D',
   backgroundBeige: '#F2F0E6',
-  backgroundGrey: '#F0F0F0',
 } as const;
 
 // Era colors definitions
@@ -25,7 +26,7 @@ export const EraColors = {
   rebirth: '#917459',
   wwii: '#537F9D',
   communistPoland: '#A06B6A',
-  modern: '#4D8480',
+  modern: '#4D8480', 
 } as const;
 
 // Quiz result colors definitions
@@ -36,7 +37,7 @@ export const QuizResultColors = {
   explorerRed: '#D83F19',
 } as const;
 
-// Light/Dark theme definitions
+// Light/Dark theme definitions 
 const tintColorLight = MainColors.pointRed;
 const tintColorDark = MainColors.pointRed;
 
@@ -44,10 +45,18 @@ export const Colors = {
   light: {
     text: MainColors.primaryBlack,
     background: MainColors.backgroundBeige,
+    text: MainColors.primaryBlack,
+    background: MainColors.backgroundBeige,
     tint: tintColorLight,
     icon: MainColors.textGrey,
     tabIconDefault: MainColors.textGrey,
+    icon: MainColors.textGrey,
+    tabIconDefault: MainColors.textGrey,
     tabIconSelected: tintColorLight,
+    // Main colors shortcut reference
+    ...MainColors,
+    ...EraColors,
+    ...QuizResultColors,
     // Main colors shortcut reference
     ...MainColors,
     ...EraColors,
@@ -56,10 +65,17 @@ export const Colors = {
   dark: {
     text: MainColors.primaryBlack,
     background: MainColors.backgroundBeige,
+    text: MainColors.primaryBlack,
+    background: MainColors.backgroundBeige,
     tint: tintColorDark,
     icon: MainColors.textGrey,
     tabIconDefault: MainColors.textGrey,
+    icon: MainColors.textGrey,
+    tabIconDefault: MainColors.textGrey,
     tabIconSelected: tintColorDark,
+    ...MainColors,
+    ...EraColors,
+    ...QuizResultColors,
     ...MainColors,
     ...EraColors,
     ...QuizResultColors,
@@ -98,32 +114,32 @@ export const FontFamily = {
   }),
 } as const;
 
-// Typography definitions
+// Typography definitions 
 export const Typography = {
   h1: {
     fontFamily: FontFamily.khula,
-    fontSize: 64,
-    lineHeight: Math.round(64 * 1.1), // 110%
+    fontSize: 56,
+    lineHeight: Math.round(56 * 1.1), // 110%
   },
   h2: {
     fontFamily: FontFamily.khula,
-    fontSize: 48,
-    lineHeight: Math.round(48 * 1.1),
+    fontSize: 36,
+    lineHeight: Math.round(36 * 1.1),
   },
   h3: {
     fontFamily: FontFamily.interBold,
-    fontSize: 36,
-    lineHeight: Math.round(36 * 1.4), // 140%
+    fontSize: 28,
+    lineHeight: Math.round(28 * 1.4), // 140%
   },
   h4: {
     fontFamily: FontFamily.interBold,
-    fontSize: 28,
-    lineHeight: Math.round(28 * 1.4),
+    fontSize: 20,
+    lineHeight: Math.round(20 * 1.4),
   },
   h5: {
     fontFamily: FontFamily.interBlack,
-    fontSize: 24,
-    lineHeight: Math.round(24 * 1.4),
+    fontSize: 18,
+    lineHeight: Math.round(18 * 1.4),
   },
   h6: {
     fontFamily: FontFamily.interBold,
@@ -132,13 +148,13 @@ export const Typography = {
   },
   body: {
     fontFamily: FontFamily.interMedium,
-    fontSize: 20,
-    lineHeight: Math.round(20 * 1.4),
+    fontSize: 18,
+    lineHeight: Math.round(16 * 1.4),
   },
   small: {
     fontFamily: FontFamily.interMedium,
     fontSize: 15,
-    lineHeight: Math.round(15 * 1.4),
+    lineHeight: Math.round(18 * 1.4),
   },
   button: {
     fontFamily: FontFamily.interMedium,
