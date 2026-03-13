@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { TimelineItem, TimelineScrubber } from '@/components/timeline-scrubber';
-import { Fonts } from '@/constants/theme';
+import { FontFamily } from '@/constants/theme';
 
 type EraDefinition = {
   name: string;
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
     fontSize: 52,
     fontWeight: '900',
     color: '#8e7012',
-    fontFamily: Fonts.rounded,
+    fontFamily: FontFamily.khula,
   },
   eraSummary: {
     marginTop: 8,
@@ -220,7 +220,7 @@ const styles = StyleSheet.create({
     lineHeight: 30,
     fontWeight: '900',
     color: '#2f2b2d',
-    fontFamily: Fonts.rounded,
+    fontFamily: FontFamily.khula,
   },
   eraTimeframe: {
     marginTop: 4,
@@ -233,7 +233,7 @@ const styles = StyleSheet.create({
     fontSize: 42,
     fontWeight: '700',
     lineHeight: 46,
-    fontFamily: Fonts.rounded,
+    fontFamily: FontFamily.khula,
   },
   timelinePanel: {
     height: 150,
