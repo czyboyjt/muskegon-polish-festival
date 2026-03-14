@@ -107,7 +107,7 @@ type HomeView = 'timeline' | 'content';
 export default function IndexScreen() {
 	const [view, setView] = useState<HomeView>('timeline');
 	const [contentEra, setContentEra] = useState<EraKey>('all');
-	const [timelineYear, setTimelineYear] = useState<number>(1918);
+	const [timelineYear, setTimelineYear] = useState<number>(1635);
 	if (view === 'content') {
 		return (<ContentScreen initialEra={contentEra}
 			onPressTimeline={(year) => {

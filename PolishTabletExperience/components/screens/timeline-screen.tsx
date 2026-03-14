@@ -87,7 +87,7 @@ const ERA_BY_NAME = Object.fromEntries(
 ) as Record<string, EraDefinition>;
 
 const DEFAULT_INDEX = Math.max(
-  ERA_ITEMS.findIndex((item) => item.year === 1918),
+  ERA_ITEMS.findIndex((item) => item.year === 1635),
   0
 );
 
