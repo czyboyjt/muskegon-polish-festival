@@ -7,6 +7,10 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { TimelineItem, TimelineScrubber } from '@/components/timeline-scrubber';
 import { FontFamily } from '@/constants/theme';
 
+import MapHotspot from '@/components/MapHotspot';
+
+
+
 type EraDefinition = {
   name: string;
   summary: string;
@@ -92,6 +96,10 @@ const DEFAULT_INDEX = Math.max(
 const EARLY_COMMONWEALTH_MAP = require('@/assets/maps_svg/1635-Realsize.svg');
 const LATE_COMMONWEALTH_MAP = require('@/assets/maps_svg/1699,1701,1713.svg');
 
+//added for hotspot placeholders
+const CULTURE_ICON = require('@/assets/POI_Icon/POI_Culture.svg');
+const HOTSPOT_IMAGE = require('@/assets/content_images/CommunistPoland/CommunistPoland_1.png');
+
 const EARLY_MAP_POSITION = { left: '56%', top: '52%' };
 const LATE_MAP_POSITION = { left: '54%', top: '52%' };
 
@@ -128,6 +136,8 @@ export default function TimelineScreen({ onPressContent }: TimelineScreenProps) 
     [selectedEra.year]
   );
 
+  const [poiOpen, setPoiOpen] = useState(false);
+
   return (
     <View style={styles.screen}>
       <Image
@@ -139,6 +149,14 @@ export default function TimelineScreen({ onPressContent }: TimelineScreenProps) 
 
       <SafeAreaView style={styles.container}>
         <View style={styles.mapArea}>
+          <MapHotspot
+            top={500}
+            left={600}
+            iconSource={CULTURE_ICON}
+            imageSource={HOTSPOT_IMAGE}
+            isOpen={poiOpen}
+            onHotspotPress={() => setPoiOpen(!poiOpen)}
+          />
           <TouchableOpacity
             style={styles.homeButton}
             onPress={() => router.push('/modal')}
@@ -187,6 +205,8 @@ export default function TimelineScreen({ onPressContent }: TimelineScreenProps) 
             </TouchableOpacity>
           </View>
         </View>
+
+        
       </SafeAreaView>
     </View>
   );
