@@ -7,6 +7,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { TimelineItem, TimelineScrubber } from '@/components/timeline-scrubber';
 import { FontFamily } from '@/constants/theme';
 
+const HOME_ICON = require('@/assets/General_Icons/ Home_icon.svg');
+
 type EraDefinition = {
   name: string;
   summary: string;
@@ -16,7 +18,7 @@ type EraDefinition = {
 };
 
 type TimelineScreenProps = {
-  onPressContent?: () => void;
+  onPressContent: () => void;
 };
 
 const ERA_DEFINITIONS: EraDefinition[] = [
@@ -59,14 +61,14 @@ const ERA_DEFINITIONS: EraDefinition[] = [
     name: 'Communist Poland',
     summary: 'Communist Poland under Soviet influence.',
     timeframe: '1945 to 1989',
-    years: [1948],
+    years: [1948, 1951, 1960, 1970, 1975, 1980, 1987],
     color: '#A06B6A',
   },
   {
     name: 'Modern Poland',
     summary: 'Where we are today: a democratic republic and member of the EU and NATO.',
     timeframe: '1990 to Present',
-    years: [1991, 1993],
+    years: [1991, 1993, 2003, 2009],
     color: '#0F766E',
   },
 ];
@@ -89,26 +91,71 @@ const DEFAULT_INDEX = Math.max(
   0
 );
 
-const EARLY_COMMONWEALTH_MAP = require('@/assets/maps_svg/1635-Realsize.svg');
-const LATE_COMMONWEALTH_MAP = require('@/assets/maps_svg/1699,1701,1713.svg');
+const MAP_1635 = require('@/assets/maps_svg/1635-Realsize.svg');
+const MAP_1699 = require('@/assets/maps_svg/1699,1701,1713.svg');
+const MAP_1772 = require('@/assets/maps_svg/1772.svg');
+const MAP_1793 = require('@/assets/maps_svg/1793.svg');
+const MAP_1795 = require('@/assets/maps_svg/1795.svg');
+const MAP_1807 = require('@/assets/maps_svg/1807.svg');
+const MAP_1815 = require('@/assets/maps_svg/1815.svg');
+const MAP_1831 = require('@/assets/maps_svg/1831.svg');
+const MAP_1846 = require('@/assets/maps_svg/1846.svg');
+const MAP_1848 = require('@/assets/maps_svg/1848.svg');
+const MAP_1867 = require('@/assets/maps_svg/1867.svg');
+const MAP_1878 = require('@/assets/maps_svg/1878, 1884,1894,1904.svg');
+const MAP_1917 = require('@/assets/maps_svg/1917.svg');
+const MAP_1918 = require('@/assets/maps_svg/1918 - 5.svg');
+const MAP_1919 = require('@/assets/maps_svg/1919-1.svg');
+const MAP_1920 = require('@/assets/maps_svg/1920, 1923.svg');
+const MAP_1922 = require('@/assets/maps_svg/1922-2, 1924, 1935.svg');
+const MAP_1938 = require('@/assets/maps_svg/1938 -1.svg');
+const MAP_1939 = require('@/assets/maps_svg/1939-2.svg');
+const MAP_1940 = require('@/assets/maps_svg/1940.1942.svg');
+const MAP_1944 = require('@/assets/maps_svg/1944.svg');
+const MAP_1945 = require('@/assets/maps_svg/1945 - 5.svg');
+const MAP_1948 = require('@/assets/maps_svg/1948, 1951, 1960, 1970, 1975, 1980, 1987.svg');
+const MAP_1991 = require('@/assets/maps_svg/1991.svg');
+const MAP_1993 = require('@/assets/maps_svg/1993, 2002, 2011.svg');
 
-const EARLY_MAP_POSITION = { left: '56%', top: '52%' };
-const LATE_MAP_POSITION = { left: '54%', top: '52%' };
+
+const RIGHT_ALIGNED_MAP_POSITION = { right: 0, top: '32%' };
+
+const MAP_BY_FLOOR_YEAR: Array<{ startYear: number; source: number }> = [
+  { startYear: 1635, source: MAP_1635 },
+  { startYear: 1686, source: MAP_1699 },
+  {startYear: 1772, source: MAP_1772 },
+  {startYear: 1793, source: MAP_1793 },
+  {startYear: 1795, source: MAP_1795 },
+  {startYear: 1807, source: MAP_1807 },
+  {startYear: 1815, source: MAP_1815 },
+  {startYear: 1831, source: MAP_1831 },
+  {startYear: 1846, source: MAP_1846 },
+  {startYear: 1848, source: MAP_1848 },
+  {startYear: 1867, source: MAP_1867 },
+  { startYear: 1878, source: MAP_1878 },
+  { startYear: 1917, source: MAP_1917 },
+  { startYear: 1918, source: MAP_1918 },
+  { startYear: 1919, source: MAP_1919 },
+  { startYear: 1920, source: MAP_1920 },
+  { startYear: 1922, source: MAP_1922 },
+  { startYear: 1938, source: MAP_1938 },
+  { startYear: 1939, source: MAP_1939 },
+  { startYear: 1940, source: MAP_1940 },
+  { startYear: 1944, source: MAP_1944 },
+  { startYear: 1945, source: MAP_1945 },
+  { startYear: 1948, source: MAP_1948 },
+  { startYear: 1991, source: MAP_1991 },
+  { startYear: 1993, source: MAP_1993 },
+];
 
 function getEraBackgroundMap(year: number) {
-  if (year <= 1653) {
-    return EARLY_COMMONWEALTH_MAP;
+  for (let index = MAP_BY_FLOOR_YEAR.length - 1; index >= 0; index -= 1) {
+    if (year >= MAP_BY_FLOOR_YEAR[index].startYear) {
+      return MAP_BY_FLOOR_YEAR[index].source;
+    }
   }
 
-  return LATE_COMMONWEALTH_MAP;
-}
-
-function getEraBackgroundPosition(year: number) {
-  if (year <= 1653) {
-    return EARLY_MAP_POSITION;
-  }
-
-  return LATE_MAP_POSITION;
+  return MAP_1635;
 }
 
 export default function TimelineScreen({ onPressContent }: TimelineScreenProps) {
@@ -123,10 +170,6 @@ export default function TimelineScreen({ onPressContent }: TimelineScreenProps) 
     color: selectedEra.color ?? '#2f2b2d',
   };
   const selectedEraMap = useMemo(() => getEraBackgroundMap(selectedEra.year), [selectedEra.year]);
-  const selectedEraMapPosition = useMemo(
-    () => getEraBackgroundPosition(selectedEra.year),
-    [selectedEra.year]
-  );
 
   return (
     <View style={styles.screen}>
@@ -134,7 +177,8 @@ export default function TimelineScreen({ onPressContent }: TimelineScreenProps) 
         source={selectedEraMap}
         style={styles.backgroundImage}
         contentFit="contain"
-        contentPosition={selectedEraMapPosition}
+        contentPosition={RIGHT_ALIGNED_MAP_POSITION}
+        pointerEvents="none"
       />
 
       <SafeAreaView style={styles.container}>
@@ -144,7 +188,7 @@ export default function TimelineScreen({ onPressContent }: TimelineScreenProps) 
             onPress={() => router.push('/modal')}
             activeOpacity={0.85}
           >
-            <Text style={styles.homeGlyph}>⌂</Text>
+            <Image source={HOME_ICON} style={styles.homeIcon} contentFit="contain" />
           </TouchableOpacity>
 
           <View style={styles.eraCard}>
@@ -161,6 +205,24 @@ export default function TimelineScreen({ onPressContent }: TimelineScreenProps) 
           </View>
         </View>
 
+        <View style={styles.bottomToggleContainer}>
+          <View style={styles.toggleWrapper}>
+            <View style={styles.activeToggle}>
+              <Text style={styles.activeToggleText}>Timeline</Text>
+            </View>
+
+            <TouchableOpacity
+              style={styles.inactiveToggle}
+              onPress={onPressContent}
+              hitSlop={{ top: 18, bottom: 6, left: 36, right: 36 }}
+              pressRetentionOffset={{ top: 30, bottom: 30, left: 48, right: 48 }}
+              activeOpacity={0.72}
+            >
+              <Text style={styles.inactiveToggleText}>Content</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+
         <View style={styles.timelinePanel}>
           <TimelineScrubber
             items={ERA_ITEMS}
@@ -171,22 +233,6 @@ export default function TimelineScreen({ onPressContent }: TimelineScreenProps) 
             onSelect={(_, index) => setSelectedIndex(index)}
           />
         </View>
-
-        <View style={styles.bottomToggleContainer}>
-          <View style={styles.toggleWrapper}>
-            <View style={styles.activeToggle}>
-              <Text style={styles.activeToggleText}>Timeline</Text>
-            </View>
-
-            <TouchableOpacity
-              style={styles.inactiveToggle}
-              onPress={() => onPressContent?.()}
-              activeOpacity={0.85}
-            >
-              <Text style={styles.inactiveToggleText}>Content</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
       </SafeAreaView>
     </View>
   );
@@ -195,13 +241,18 @@ export default function TimelineScreen({ onPressContent }: TimelineScreenProps) 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: '#6cb6cb',
+    backgroundColor: '#D3DCCD',
   },
   container: {
     flex: 1,
   },
   backgroundImage: {
-    ...StyleSheet.absoluteFillObject,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: '88%',
+    height: '88%',
+    zIndex: 2,
   },
   mapArea: {
     flex: 1,
@@ -220,15 +271,20 @@ const styles = StyleSheet.create({
     fontSize: 24,
     color: '#333333',
   },
+  homeIcon: {
+    width: 32,
+    height: 32,
+  },
   eraCard: {
     width: 440,
     marginTop: 24,
     padding: 16,
     borderRadius: 10,
     backgroundColor: 'rgba(241, 241, 241, 0.94)',
+    zIndex: 3,
   },
   eraYear: {
-    fontSize: 52,
+    fontSize: 48,
     fontWeight: '900',
     color: '#8e7012',
     fontFamily: FontFamily.khula,
@@ -241,15 +297,14 @@ const styles = StyleSheet.create({
     color: '#2f2b2d',
   },
   eraName: {
-    marginTop: 6,
-    fontSize: 24,
-    lineHeight: 30,
+    fontSize: 32,
+    lineHeight: 36,
     fontWeight: '900',
     color: '#2f2b2d',
     fontFamily: FontFamily.khula,
   },
   eraTimeframe: {
-    marginTop: 4,
+    marginTop: 12,
     fontSize: 18,
     lineHeight: 24,
     fontWeight: '600',
@@ -262,17 +317,17 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.khula,
   },
   timelinePanel: {
-    height: 150,
-    backgroundColor: 'transparent',
-    paddingHorizontal: -42416,
-    paddingTop: 4,
+    height: 120,
+    backgroundColor: '#D3DCCD',
+    justifyContent: 'flex-end',
+    paddingHorizontal: 0,
+    paddingTop: 8,
     paddingBottom: 8,
-    borderTopWidth: 0,
   },
   bottomToggleContainer: {
-    position: 'absolute',
-    bottom: 116,
-    left: 20,
+    alignSelf: 'flex-start',
+    marginLeft: 20,
+    marginBottom: 28,
   },
   toggleWrapper: {
     flexDirection: 'row',
@@ -282,8 +337,11 @@ const styles = StyleSheet.create({
   },
   inactiveToggle: {
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 24,
     borderRadius: 40,
+    minWidth: 120,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   activeToggle: {
     paddingVertical: 10,

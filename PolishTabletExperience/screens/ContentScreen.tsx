@@ -108,7 +108,7 @@ export default function ContentScreen({ onPressTimeline }: ContentScreenProps) {
           <TouchableOpacity
             style={styles.inactiveToggle}
             onPress={() => (onPressTimeline ? onPressTimeline() : router.push("/"))}
-            activeOpacity={0.85}
+            activeOpacity={0.72}
           >
             <ThemedText type="button" style={{ color: MainColors.primaryBlack }}>
               Timeline
