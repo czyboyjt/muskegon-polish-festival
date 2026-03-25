@@ -99,8 +99,8 @@
 
 import TimelineScreen from '@/components/screens/timeline-screen';
 import ContentScreen from '@/screens/ContentScreen';
-import { useState } from 'react';
 import { EraKey } from '@/constants/contentData';
+import { useState } from 'react';
 
 type HomeView = 'timeline' | 'content';
 
@@ -119,6 +119,7 @@ export default function IndexScreen() {
 	return (
 		<TimelineScreen
 			initialYear={timelineYear}
+			onTimelineYearChange={setTimelineYear}
 			onPressContent={(era) => {
 				setContentEra(era);
 				setView('content');

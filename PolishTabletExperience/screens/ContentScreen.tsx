@@ -109,7 +109,11 @@ export default function ContentScreen({ onPressTimeline,
                   item.top?.id &&
                   router.push({
                     pathname: "/poi-detail",
-                    params: { id: String(item.top.id) },
+                    params: {
+                      id: String(item.top.id),
+                      returnRoot: "content",
+                      returnEra: selectedEra,
+                    },
                   })
                 }
               />
@@ -120,10 +124,14 @@ export default function ContentScreen({ onPressTimeline,
                   item={item.bottom}
                   onPress={() =>
                     item.bottom?.id &&
-                    router.push({
-                      pathname: "/poi-detail",
-                      params: { id: String(item.bottom.id) },
-                    })
+                  router.push({
+                    pathname: "/poi-detail",
+                    params: {
+                      id: String(item.bottom.id),
+                      returnRoot: "content",
+                      returnEra: selectedEra,
+                    },
+                  })
                   }
                 />
               </View>

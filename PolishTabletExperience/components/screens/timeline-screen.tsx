@@ -24,6 +24,7 @@ type EraDefinition = {
 
 type TimelineScreenProps = {
   onPressContent?: (era: EraKey) => void;
+  onTimelineYearChange?: (year: number) => void;
   initialYear?: number;
 };
 
@@ -193,6 +194,7 @@ function getIndexFromYear(year: number) {
 }
 
 export default function TimelineScreen({ onPressContent,
+  onTimelineYearChange,
   initialYear = 1635, }: TimelineScreenProps) {
   const router = useRouter();
   const [selectedIndex, setSelectedIndex] = useState(() => getIndexFromYear(initialYear));
@@ -200,6 +202,10 @@ export default function TimelineScreen({ onPressContent,
     setSelectedIndex(getIndexFromYear(initialYear));
   }, [initialYear]);
   const selectedEra = useMemo(() => ERA_ITEMS[selectedIndex] ?? ERA_ITEMS[0], [selectedIndex]);
+
+  useEffect(() => {
+    onTimelineYearChange?.(selectedEra.year);
+  }, [selectedEra.year, onTimelineYearChange]);
   const selectedEraDefinition = ERA_BY_NAME[selectedEra.label] ?? {
     name: selectedEra.label,
     summary: selectedEra.label,
@@ -255,6 +261,17 @@ export default function TimelineScreen({ onPressContent,
             imageSource={HOTSPOT_IMAGE}
             isOpen={poiOpen}
             onHotspotPress={() => setPoiOpen(!poiOpen)}
+            onPopupPress={() => {
+              setPoiOpen(false);
+              router.push({
+                pathname: '/poi-detail',
+                params: {
+                  id: 'c3',
+                  returnRoot: 'timeline',
+                  returnYear: String(selectedEra.year),
+                },
+              });
+            }}
             style={{ zIndex: 10, elevation: 10 }}
           />
         </View>

@@ -25,12 +25,44 @@ function BackIcon({ size = 28, color = '#1C1B1F' }) {
 
 const DEFAULT_MAIN_ID = 'c1';
 
+
+function paramFirst(value) {
+  if (value == null) return undefined;
+  if (Array.isArray(value)) return value[0];
+  if (typeof value === 'string') return value;
+  return String(value);
+}
+
+function buildReturnParams(params) {
+  const out = {};
+  const root = paramFirst(params.returnRoot);
+  const era = paramFirst(params.returnEra);
+  const year = paramFirst(params.returnYear);
+  if (root) out.returnRoot = root;
+  if (era) out.returnEra = era;
+  if (year != null && year !== '') out.returnYear = String(year);
+  return out;
+}
+
 export default function POIDetailScreen() {
   const router = useRouter();
   const params = useLocalSearchParams();
-  const currentId = typeof params.id === 'string' ? params.id : DEFAULT_MAIN_ID;
+  const currentId = paramFirst(params.id) || DEFAULT_MAIN_ID;
+  const returnParams = buildReturnParams(params);
 
   const mainPoi = POI_DETAILS[currentId] || POI_DETAILS[DEFAULT_MAIN_ID];
+
+  const handleBack = () => {
+    if (returnParams.returnRoot === 'content' && returnParams.returnEra) {
+      router.dismissAll();
+      return;
+    }
+    if (returnParams.returnRoot === 'timeline' && returnParams.returnYear) {
+      router.dismissAll();
+      return;
+    }
+    router.back();
+  };
 
   const relatedPois =
     (mainPoi.relatedIds || [])
@@ -56,7 +88,7 @@ export default function POIDetailScreen() {
     <View style={styles.container}>
       <View style={styles.header}>
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={handleBack}
           style={styles.backButton}
           hitSlop={{ top: 12, bottom: 12, left: 12, right: 12 }}
         >
@@ -92,7 +124,7 @@ export default function POIDetailScreen() {
               onPress={() =>
                 router.push({
                   pathname: '/poi-detail',
-                  params: { id: item.id },
+                  params: { id: item.id, ...returnParams },
                 })
               }
             >

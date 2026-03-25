@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, StyleProp, Text, View, ViewStyle } from 'react-native';
 
 type Props = {
   top: number | string;
