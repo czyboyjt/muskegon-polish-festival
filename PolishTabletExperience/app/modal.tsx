@@ -21,10 +21,8 @@ export default function ModalScreen() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="h2">This is a modal</ThemedText>
-      <Link href="/" dismissTo style={styles.link}>
-        <ThemedText type="body" lightColor={MainColors.pointRed} darkColor={MainColors.pointRed}>
-          Go to home screen
-        </ThemedText>
+      <Link href="/GuideScreen" dismissTo style={styles.link}>
+        <ThemedText type="body" lightColor={MainColors.pointRed} darkColor={MainColors.pointRed}>Go to home screen</ThemedText>
       </Link>
     </ThemedView>
   );
