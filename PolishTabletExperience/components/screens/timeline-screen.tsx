@@ -131,9 +131,9 @@ const CULTURE_ICON = require('@/assets/POI_Icon/POI_Culture.svg');
 // const HOTSPOT_IMAGE = require('@/assets/content_images/CommunistPoland/CommunistPoland_1.png');
 const HOTSPOT_ICONS = {
   culture: require('@/assets/POI_Icon/POI_Culture.svg'),
-  person: require('@/assets/POI_Icon/POI_Person.svg'),
-  place: require('@/assets/POI_Icon/POI_Place.svg'),
-  event: require('@/assets/POI_Icon/POI_Event.svg'),
+  biography: require('@/assets/POI_Icon/POI_Biography.svg'),
+  history: require('@/assets/POI_Icon/POI_History.svg'),
+  science: require('@/assets/POI_Icon/POI_Science.svg'),
 };
 
 const MAP_BY_FLOOR_YEAR: Array<{ startYear: number; source: number }> = [
@@ -312,8 +312,14 @@ export default function TimelineScreen({
                   onHotspotPress={() =>
                     setOpenPoiId((current) => (current === poi.id ? null : poi.id))
                   }
+                  // onPopupPress={() => {
+                  //   console.log('Open detail page for', poi.id);
+                  // }} //change this to navigate to the detail screen for the POI
                   onPopupPress={() => {
-                    console.log('Open detail page for', poi.id);
+                    router.push({
+                      pathname: '/poi-detail',
+                      params: { id: poi.id },
+                    });
                   }}
                   titleTop={poi.titleTop}
                   yearLabel={poi.yearLabel}

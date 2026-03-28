@@ -43,8 +43,7 @@ export type PoiDetail = {
     // iconType: PoiIconType;
 };
 
-// export type PoiIconType = 'culture' | 'person' | 'place' | 'event';
-
+// export type PoiIconType = 'culture' | 'biography' | 'history' | 'science';
 
 export const POI_DETAILS: Record<string, PoiDetail> = {
     c1: {
