@@ -14,6 +14,7 @@ const HOME_ICON = require('@/assets/General_Icons/ Home_icon.svg');
 import MapHotspot from '@/components/MapHotspot';
 import PoiButton from '../PoiButton';
 
+
 type EraDefinition = {
   name: string;
   summary: string;
@@ -128,6 +129,12 @@ const LEFT_BACKGROUND_VECTOR = require('@/assets/maps_svg/background-vector.svg'
 
 const CULTURE_ICON = require('@/assets/POI_Icon/POI_Culture.svg');
 // const HOTSPOT_IMAGE = require('@/assets/content_images/CommunistPoland/CommunistPoland_1.png');
+const HOTSPOT_ICONS = {
+  culture: require('@/assets/POI_Icon/POI_Culture.svg'),
+  person: require('@/assets/POI_Icon/POI_Person.svg'),
+  place: require('@/assets/POI_Icon/POI_Place.svg'),
+  event: require('@/assets/POI_Icon/POI_Event.svg'),
+};
 
 const MAP_BY_FLOOR_YEAR: Array<{ startYear: number; source: number }> = [
   { startYear: 1635, source: MAP_1635 },
@@ -299,6 +306,7 @@ export default function TimelineScreen({
                   top={position.top}
                   left={position.left}
                   iconSource={CULTURE_ICON}
+                  // iconSource={HOTSPOT_ICONS[poi.iconType]}
                   imageSource={poi.mainImage}
                   isOpen={openPoiId === poi.id}
                   onHotspotPress={() =>
@@ -362,44 +370,44 @@ const styles = StyleSheet.create({
   },
 
   mapArea: {
-  flex: 1,
-  paddingHorizontal: 28,
-  paddingTop: 18,
-  overflow: 'hidden',
-  zIndex: 1,
-},
+    flex: 1,
+    paddingHorizontal: 28,
+    paddingTop: 18,
+    overflow: 'hidden',
+    zIndex: 1,
+  },
 
-backgroundImage: {
-  position: 'absolute',
-  top: 0,
-  right: 0,
-  bottom: 0,
-  left: '41%',
-  zIndex: 1,
-},
+  backgroundImage: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: '41%',
+    zIndex: 1,
+  },
 
-leftLandWaterLayer: {
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  bottom: 0,
-  width: '44%',
-  zIndex: 0,
-  overflow: 'hidden',
-},
+  leftLandWaterLayer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    width: '44%',
+    zIndex: 0,
+    overflow: 'hidden',
+  },
 
-leftLandFill: {
-  ...StyleSheet.absoluteFillObject,
-  backgroundColor: '#D3DCCD',
-},
+  leftLandFill: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: '#D3DCCD',
+  },
 
-leftVectorImage: {
-  position: 'absolute',
-  top: -170,
-  left: 0,
-  right: 0,
-  height: '80%',
-},
+  leftVectorImage: {
+    position: 'absolute',
+    top: -170,
+    left: 0,
+    right: 0,
+    height: '80%',
+  },
 
   homeButton: {
     width: 52,
@@ -458,12 +466,12 @@ leftVectorImage: {
     backgroundColor: '#D3DCCD',
   },
 
-bottomToggleContainer: {
-  position: 'absolute',
-  left: 20,
-  bottom: 92,
-  zIndex: 20,
-},
+  bottomToggleContainer: {
+    position: 'absolute',
+    left: 20,
+    bottom: 92,
+    zIndex: 20,
+  },
 
   toggleWrapper: {
     flexDirection: 'row',
