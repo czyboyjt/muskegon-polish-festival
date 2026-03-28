@@ -6,7 +6,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { TimelineItem, TimelineScrubber } from '@/components/timeline-scrubber';
 import { FontFamily, MainColors } from '@/constants/theme';
-import { EraKey } from '@/constants/contentData';
+import { EraKey, POI_DETAILS } from '@/constants/contentData';
+import { HOTSPOT_POSITIONS } from '@/constants/hotspotPositions';
 
 const HOME_ICON = require('@/assets/General_Icons/ Home_icon.svg');
 
@@ -126,7 +127,7 @@ const RIGHT_ALIGNED_MAP_POSITION = { right: 0, top: '32%' };
 const LEFT_BACKGROUND_VECTOR = require('@/assets/maps_svg/background-vector.svg');
 
 const CULTURE_ICON = require('@/assets/POI_Icon/POI_Culture.svg');
-const HOTSPOT_IMAGE = require('@/assets/content_images/CommunistPoland/CommunistPoland_1.png');
+// const HOTSPOT_IMAGE = require('@/assets/content_images/CommunistPoland/CommunistPoland_1.png');
 
 const MAP_BY_FLOOR_YEAR: Array<{ startYear: number; source: number }> = [
   { startYear: 1635, source: MAP_1635 },
@@ -227,9 +228,20 @@ export default function TimelineScreen({
   const selectedEraMap = useMemo(() => getEraBackgroundMap(selectedEra.year), [selectedEra.year]);
 
   const targetEraKey = getEraKeyFromLabel(selectedEra.label);
+  
+  const visibleHotspots = useMemo(() => {
+    if (targetEraKey === 'all') return [];
 
-  const [poiOpen, setPoiOpen] = useState(false);
+    return Object.values(POI_DETAILS).filter((poi) =>
+      poi.eraKeys.includes(targetEraKey)
+    );
+  }, [targetEraKey]);
 
+  const [openPoiId, setOpenPoiId] = useState<string | null>(null);
+  
+  useEffect(() => {
+    setOpenPoiId(null);
+  }, [selectedEra.year]);
 
   return (
     <View style={styles.screen}>
@@ -276,21 +288,34 @@ export default function TimelineScreen({
               description='This is a sample description text for the point of interest. It can be multiple lines long and provides more details about the hotspot.'
               />
           </View>
-            <MapHotspot
-              top={500}
-              left={600}
-              iconSource={CULTURE_ICON}
-              imageSource={HOTSPOT_IMAGE}
-              isOpen={poiOpen}
-              onHotspotPress={() => setPoiOpen(!poiOpen)}
-              titleTop="Did You Know?"
-              yearLabel="1945"
-              description="Despite helping defeat Hitler, Poland was handed over to the Soviets in 1945."
-              style={{ zIndex: 10, elevation: 10 }}
-            />
-  
-        </View>
-  
+            {visibleHotspots.map((poi) => {
+              const position = HOTSPOT_POSITIONS[poi.id];
+
+              if (!position || !poi.mainImage) return null;
+
+              return (
+                <MapHotspot
+                  key={poi.id}
+                  top={position.top}
+                  left={position.left}
+                  iconSource={CULTURE_ICON}
+                  imageSource={poi.mainImage}
+                  isOpen={openPoiId === poi.id}
+                  onHotspotPress={() =>
+                    setOpenPoiId((current) => (current === poi.id ? null : poi.id))
+                  }
+                  onPopupPress={() => {
+                    console.log('Open detail page for', poi.id);
+                  }}
+                  titleTop={poi.titleTop}
+                  yearLabel={poi.yearLabel}
+                  description={poi.summary ?? poi.description}
+                  style={{ zIndex: 10, elevation: 10 }}
+                />
+              );
+            })}
+
+          </View>
         <View style={styles.bottomControls}>
           <View style={styles.bottomToggleContainer}>
             <View style={styles.toggleWrapper}>
