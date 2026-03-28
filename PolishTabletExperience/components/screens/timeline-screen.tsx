@@ -277,13 +277,16 @@ export default function TimelineScreen({
               />
           </View>
             <MapHotspot
-            top={500}
-            left={600}
-            iconSource={CULTURE_ICON}
-            imageSource={HOTSPOT_IMAGE}
-            isOpen={poiOpen}
-            onHotspotPress={() => setPoiOpen(!poiOpen)}
-            style={{ zIndex: 10, elevation: 10 }}
+              top={500}
+              left={600}
+              iconSource={CULTURE_ICON}
+              imageSource={HOTSPOT_IMAGE}
+              isOpen={poiOpen}
+              onHotspotPress={() => setPoiOpen(!poiOpen)}
+              titleTop="Did You Know?"
+              yearLabel="1945"
+              description="Despite helping defeat Hitler, Poland was handed over to the Soviets in 1945."
+              style={{ zIndex: 10, elevation: 10 }}
             />
   
         </View>
