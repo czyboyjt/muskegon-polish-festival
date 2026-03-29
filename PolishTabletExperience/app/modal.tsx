@@ -1,23 +1,12 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { Link } from 'expo-router';
 import { StyleSheet } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { MainColors } from '@/constants/theme';
-import { useVisited } from '@/components/VisitedContext';
 
 export default function ModalScreen() {
-  const { resetVisited } = useVisited();
-
-  // Reset visited state when the modal screen is focused
-  useFocusEffect(
-    useCallback(() => {
-      resetVisited();
-    }, [resetVisited])
-  );
-
   return (
     <ThemedView style={styles.container}>
       <ThemedText type="h2">This is a modal</ThemedText>

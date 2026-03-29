@@ -82,6 +82,7 @@ export default function POIDetailScreen() {
         showsVerticalScrollIndicator={false}
       >
         <View style={[styles.mainContent, contentFlex]}>
+          {/* Embedded video: use key={mediaResetKey} from useVisited() so GuideScreen reset restarts playback. */}
           <View style={styles.imagePlaceholder}>
             {mainPoi.mainImage ? (
               <Image source={mainPoi.mainImage} style={styles.mainImage} contentFit="cover" />
