@@ -60,7 +60,7 @@ export default function GuideScreen() {
         
         {/* Educator card */}
         <Link
-        href={{ pathname: '/', params: { year: '1914' } }}
+        href={{ pathname: '/', params: { openTimelineAtYear: '1635' } }}
         asChild
         >
         <TouchableOpacity style ={styles.card}>
@@ -87,7 +87,7 @@ export default function GuideScreen() {
         
         {/* Writer card */}
         <Link
-        href={{ pathname: '/', params: { year: '1939' } }}
+        href={{ pathname: '/', params: { openTimelineAtYear: '1686' } }}
         asChild
         >
         <TouchableOpacity style ={styles.card}>
@@ -113,7 +113,7 @@ export default function GuideScreen() {
         
         {/* Crafter card */}
         <Link
-        href={{ pathname: '/', params: { year: '1686' } }}
+        href={{ pathname: '/', params: { openTimelineAtYear: '1914' } }}
         asChild
         >
         <TouchableOpacity style ={styles.card}>
@@ -139,7 +139,7 @@ export default function GuideScreen() {
 
         {/* Explorer card */}
         <Link
-        href={{ pathname: '/', params: { year: '1948' } }}
+        href={{ pathname: '/', params: { openTimelineAtYear: '1939' } }}
         asChild
         >
         <TouchableOpacity style ={styles.card}>
@@ -171,14 +171,12 @@ export default function GuideScreen() {
 
         <View style={{ alignSelf: "flex-end", marginTop: 24, marginHorizontal: 54 }}>
         <Link
-        href={{ pathname: '/', params: { year: '1635' } }}
+        href={{ pathname: '/', params: { openTimelineAtYear: '1635' } }}
         asChild
         >
             <TouchableOpacity style={{ backgroundColor: MainColors.pointRed, paddingHorizontal: 40, paddingVertical: 12, borderRadius: 30, flexDirection: 'row', alignItems: 'center' }}>
-            <Link href="/">
                 <Text style={{ color: "white", fontSize: Typography.button.fontSize, fontWeight: "black", fontFamily: Typography.button.fontFamily }}>Explore the map yourself</Text>
                 <Ionicons name="arrow-forward" size={18} color="white" style={{ marginLeft: 8,}} />
-                </Link>
             </TouchableOpacity>
             </Link>
         </View>
