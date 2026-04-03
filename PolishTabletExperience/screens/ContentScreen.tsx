@@ -14,7 +14,7 @@ import {
 } from "../constants/contentData";
 
 import { ThemedText } from "@/components/themed-text";
-import { MainColors, EraColors } from "@/constants/theme";
+import { EraTabTheme, MainColors } from "@/constants/theme";
 
 type ColumnItem = {
   top?: (typeof MOCK_CARDS)[number];
@@ -39,21 +39,10 @@ export default function ContentScreen({ onPressTimeline,
       ? "Title"
       : ERA_TABS.find((tab) => tab.key === selectedEra)?.label ?? "Title";
 
-  // Era → Color
-  const eraColorMap: Record<string, string> = {
-    golden_age: EraColors.goldenAge,
-    wars_partitions: EraColors.warsAndPartitions,
-    independence: EraColors.independence,
-    rebirth: EraColors.rebirth,
-    ww2: EraColors.wwii,
-    communist: EraColors.communistPoland,
-    modern: EraColors.modern,
-  };
-
   const activeEraColor =
     selectedEra === "all"
       ? MainColors.buttonBlack
-      : eraColorMap[selectedEra] ?? MainColors.pointRed;
+      : EraTabTheme[selectedEra as keyof typeof EraTabTheme]?.color ?? MainColors.pointRed;
 
   const filteredCards = useMemo(() => {
     if (selectedEra === "all") return MOCK_CARDS;

@@ -21,21 +21,58 @@ export const MainColors = {
 
 // Era colors definitions
 export const EraColors = {
-  goldenAge: '#907618',
-  warsAndPartitions: '#588240',
-  independence: '#806FB8',
-  rebirth: '#917459',
-  wwii: '#537F9D',
-  communistPoland: '#A06B6A',
-  modern: '#4D8480', 
+  goldenAge: '#7A5A00',
+  warsAndPartitions: '#1E6B3A',
+  independence: '#5B4AA8',
+  rebirth: '#8A4B5A',
+  wwii: '#1E5B99',
+  liberation: '#0F6D7A',
+  communistPoland: '#9B2F2F',
+  growingDiscontent: '#4F5D95',
+  modern: '#0E7C66',
+  golden_age: '#7A5A00',
+  wars_partitions: '#1E6B3A',
+  ww2: '#1E5B99',
+  communist: '#9B2F2F',
+} as const;
+
+export const EraTabTheme = {
+  golden_age: {
+    label: 'The Golden Age',
+    color: EraColors.golden_age,
+  },
+  wars_partitions: {
+    label: 'The Silver Age & Era of Wars',
+    color: EraColors.wars_partitions,
+  },
+  independence: {
+    label: 'Struggle for Independence',
+    color: EraColors.independence,
+  },
+  rebirth: {
+    label: 'Rebirth of Poland',
+    color: EraColors.rebirth,
+  },
+  ww2: {
+    label: 'World War II & Occupation',
+    color: EraColors.ww2,
+  },
+  communist: {
+    label: 'Communist Poland',
+    color: EraColors.communist,
+  },
+  modern: {
+    label: 'Modern Poland',
+    color: EraColors.modern,
+  },
 } as const;
 
 // Quiz result colors definitions
 export const QuizResultColors = {
-  educatorGold: '#9B5802',
-  writerBlue: '#4E6CD8',
-  crafterGreen: '#2F702F',
-  explorerRed: '#D83F19',
+  educatorGold: EraColors.golden_age,
+  writerBlue: EraColors.wars_partitions,
+  crafterGreen: EraColors.rebirth,
+  explorerRed: EraColors.ww2,
 } as const;
 
 // Light/Dark theme definitions 
@@ -50,11 +87,6 @@ export const Colors = {
     icon: MainColors.textGrey,
     tabIconDefault: MainColors.textGrey,
     tabIconSelected: tintColorLight,
-    // Main colors shortcut reference
-    ...MainColors,
-    ...EraColors,
-    ...QuizResultColors,
-    // Main colors shortcut reference
     ...MainColors,
     ...EraColors,
     ...QuizResultColors,
@@ -66,9 +98,6 @@ export const Colors = {
     icon: MainColors.textGrey,
     tabIconDefault: MainColors.textGrey,
     tabIconSelected: tintColorDark,
-    ...MainColors,
-    ...EraColors,
-    ...QuizResultColors,
     ...MainColors,
     ...EraColors,
     ...QuizResultColors,

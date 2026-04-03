@@ -1,3 +1,5 @@
+import { EraTabTheme } from './theme';
+
 export type EraKey =
     | "all"
     | "golden_age"
@@ -445,13 +447,13 @@ export const POI_DETAILS: Record<string, PoiDetail> = {
 
 export const ERA_TABS: EraTab[] = [
     { key: "all", label: "All" },
-    { key: "golden_age", label: "The Golden Age" },
-    { key: "wars_partitions", label: "The Era of Wars & Partitions" },
-    { key: "independence", label: "Struggle for Independence" },
-    { key: "rebirth", label: "Rebirth of Poland" },
-    { key: "ww2", label: "World War II & Occupation" },
-    { key: "communist", label: "Communist Poland" },
-    { key: "modern", label: "Modern Poland" },
+    { key: "golden_age", label: EraTabTheme.golden_age.label },
+    { key: "wars_partitions", label: EraTabTheme.wars_partitions.label },
+    { key: "independence", label: EraTabTheme.independence.label },
+    { key: "rebirth", label: EraTabTheme.rebirth.label },
+    { key: "ww2", label: EraTabTheme.ww2.label },
+    { key: "communist", label: EraTabTheme.communist.label },
+    { key: "modern", label: EraTabTheme.modern.label },
 ];
 
 // In a real app, this data would come from an API or database
