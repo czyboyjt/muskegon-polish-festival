@@ -21,19 +21,19 @@ export const MainColors = {
 
 // Era colors definitions
 export const EraColors = {
-  goldenAge: '#7A5A00',
-  warsAndPartitions: '#1E6B3A',
-  independence: '#5B4AA8',
-  rebirth: '#8A4B5A',
-  wwii: '#1E5B99',
-  liberation: '#0F6D7A',
-  communistPoland: '#9B2F2F',
-  growingDiscontent: '#4F5D95',
-  modern: '#0E7C66',
-  golden_age: '#7A5A00',
-  wars_partitions: '#1E6B3A',
-  ww2: '#1E5B99',
-  communist: '#9B2F2F',
+  goldenAge: '#946C00',
+  warsAndPartitions: '#26874B',
+  independence: '#796ABE',
+  rebirth: '#A7626E',
+  wwii: '#2878C8',
+  liberation: '#128291',
+  communistPoland: '#C84C4C',
+  growingDiscontent: '#6272AC',
+  modern: '#0F856D',
+  golden_age: '#946C00',
+  wars_partitions: '#26874B',
+  ww2: '#2878C8',
+  communist: '#C84C4C',
 } as const;
 
 export const EraTabTheme = {
