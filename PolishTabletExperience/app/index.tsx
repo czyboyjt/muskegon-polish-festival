@@ -124,7 +124,9 @@ export default function IndexScreen() {
   const params = useLocalSearchParams<{
     openTimelineAtYear?: string | string[];
     openContentEra?: string | string[];
+    guide?: string | string[];
   }>();
+
 
   const [view, setView] = useState<HomeView>('timeline');
   const [contentEra, setContentEra] = useState<EraKey>('all');
@@ -177,6 +179,7 @@ export default function IndexScreen() {
       >
         <TimelineScreen
           initialYear={timelineYear}
+          activeGuide={params.guide as string}
           onTimelineYearChange={setTimelineYear}
           onPressContent={(era) => switchView('content', era)}
         />
