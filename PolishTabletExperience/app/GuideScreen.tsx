@@ -60,7 +60,7 @@ export default function GuideScreen() {
         
         {/* Educator card */}
         <Link
-        href={{ pathname: '/', params: { openTimelineAtYear: '1635' } }}
+        href={{ pathname: '/', params: { openTimelineAtYear: '1635', guide: 'Culture', } }}
         asChild
         >
         <TouchableOpacity style ={styles.card}>
@@ -87,7 +87,7 @@ export default function GuideScreen() {
         
         {/* Writer card */}
         <Link
-        href={{ pathname: '/', params: { openTimelineAtYear: '1686' } }}
+        href={{ pathname: '/', params: { openTimelineAtYear: '1686', guide: 'Hero' } }}
         asChild
         >
         <TouchableOpacity style ={styles.card}>
@@ -113,7 +113,7 @@ export default function GuideScreen() {
         
         {/* Crafter card */}
         <Link
-        href={{ pathname: '/', params: { openTimelineAtYear: '1914' } }}
+        href={{ pathname: '/', params: { openTimelineAtYear: '1914', guide: 'Crafter', } }}
         asChild
         >
         <TouchableOpacity style ={styles.card}>
@@ -139,7 +139,7 @@ export default function GuideScreen() {
 
         {/* Explorer card */}
         <Link
-        href={{ pathname: '/', params: { openTimelineAtYear: '1939' } }}
+        href={{ pathname: '/', params: { openTimelineAtYear: '1939', guide: 'Adventurer' } }}
         asChild
         >
         <TouchableOpacity style ={styles.card}>

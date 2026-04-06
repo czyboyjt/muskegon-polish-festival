@@ -3,11 +3,14 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { QuizResultColors } from '@/constants/theme';
 
 import { TimelineItem, TimelineScrubber } from '@/components/timeline-scrubber';
 import { EraColors, EraTabTheme, FontFamily, MainColors } from '@/constants/theme';
 import { EraKey, POI_DETAILS } from '@/constants/contentData';
 import { HOTSPOT_POSITIONS } from '@/constants/hotspotPositions';
+import GuideCard from '../GuideCard';
+import LegendCard from '../LegendCard';
 
 const HOME_ICON = require('@/assets/General_Icons/ Home_icon.svg');
 
@@ -29,6 +32,7 @@ type TimelineScreenProps = {
   onPressContent?: (era: EraKey) => void;
   onTimelineYearChange?: (year: number) => void;
   initialYear?: number;
+  activeGuide?: string;
 };
 
 const ERA_DEFINITIONS: EraDefinition[] = [
@@ -220,6 +224,78 @@ const MAP_BY_FLOOR_YEAR: Array<{ startYear: number; source: number }> = [
   { startYear: 1989, source: MAP_1989 },
   { startYear: 1993, source: MAP_1993 },
 ];
+const GUIDE_LENS: Record<string, number[]> = {
+  Culture: [1635, 1653],
+  Hero: [1772, 1793, 1795],
+  Adventurer: [1939, 1944, 1945],
+  Crafter: [1914, 1918, 1920],
+};
+
+const GUIDE_STYLES: Record<
+  string,
+  {
+    label: string;
+    color: string;
+    screenTint: string;
+    tint: string;
+    description?: string;
+    focusesOn?: string[];
+  }
+> = {
+  Culture: {
+    label: 'The Culture Buff',
+    color: QuizResultColors.educatorGold,
+    screenTint: 'rgba(155, 88, 2, 0.05)',
+    tint: 'rgba(155, 88, 2, 0.01)',
+    description:
+    'A guide for exploring key moments through context, teaching, and historical meaning.',
+  focusesOn: [
+    'historical context',
+    'important turning points',
+    'educational takeaways',]
+  },
+  Hero: {
+    label: 'The Unsung Hero',
+    color: QuizResultColors.writerBlue,
+    screenTint: QuizResultColors.writerBlue + '0A',
+    tint: 'rgba(155, 88, 2, 0.08)',
+    description:
+    'A guide for exploring key moments through context, teaching, and historical meaning.',
+  focusesOn: [
+    'Cultural Resistance',
+    'Everyday Heroes',
+    'Hope for Independence'
+  ]
+  },
+  Adventurer: {
+    label: 'Adventurer',
+    color: QuizResultColors.explorerRed,
+    screenTint: QuizResultColors.explorerRed + '0A',
+    tint: 'rgba(155, 88, 2, 0.08)',
+    description:
+    'A guide for exploring key moments through context, teaching, and historical meaning.',
+  focusesOn: [
+    'Stories of Survival',
+    'Resistance Movements',
+    'Personal Sacrifices'
+
+  ]
+  },
+  Crafter: {
+    label: 'Crafter',
+    color: QuizResultColors.crafterGreen,
+    screenTint: QuizResultColors.crafterGreen + '0A',
+    tint: 'rgba(155, 88, 2, 0.08)',
+    description:
+    'A guide for exploring key moments through context, teaching, and historical meaning.',
+    focusesOn: [
+    'Polish-Soviet War',
+    'Resurgence of National Pride',
+    'Cultural Renaissance'
+
+  ]
+  },
+};
 
 const BORDER_CHANGE_BY_YEAR: Record<number, string> = {
   1635: 'Sweden signed the Treaty of Stuhmsdorf, returning territories to the Polish–Lithuanian Commonwealth.',
@@ -279,9 +355,17 @@ export default function TimelineScreen({
   onPressContent,
   onTimelineYearChange,
   initialYear,
+  activeGuide,
 }: TimelineScreenProps) {
   const router = useRouter();
 
+  const relevantYears = activeGuide ? GUIDE_LENS[activeGuide] ?? [] : [];
+  const timelineItems = ERA_ITEMS.map((item) => ({
+    ...item,
+    isRelevant: relevantYears.includes(item.year),
+  }));
+  
+  console.log("activeGuide", activeGuide)
   const initialIndex = useMemo(() => {
     if (initialYear != null && !Number.isNaN(initialYear)) {
       const foundIndex = ERA_ITEMS.findIndex((item) => item.year === initialYear);
@@ -294,13 +378,13 @@ export default function TimelineScreen({
 
     const [selectedIndex, setSelectedIndex] = useState(initialIndex);
     const currentItem = ERA_ITEMS[selectedIndex] ?? ERA_ITEMS[0];
-    const borderDescription =
-      BORDER_CHANGE_BY_YEAR[currentItem.year] ?? 'No explanation available yet.';
-  
+    const borderDescription = BORDER_CHANGE_BY_YEAR[currentItem.year];
+    const guideStyle = activeGuide ? GUIDE_STYLES[activeGuide] : undefined;
     useEffect(() => {
       setSelectedIndex(initialIndex);
     }, [initialIndex]);
-  
+    const selectedItem = timelineItems[selectedIndex];
+    const isCurrentYearRelevant = selectedItem?.isRelevant !== false;
 
 
   const selectedEra = useMemo(() => ERA_ITEMS[selectedIndex] ?? ERA_ITEMS[0], [selectedIndex]);
@@ -349,15 +433,36 @@ export default function TimelineScreen({
             contentPosition="right center"
             pointerEvents="none"
           />
-  
-          <TouchableOpacity
-            style={styles.homeButton}
-            onPress={() => router.push('/GuideScreen')}
-            activeOpacity={0.85}
-          >
-            <Image source={HOME_ICON} style={styles.homeIcon} contentFit="contain" />
-          </TouchableOpacity>
-  
+            {guideStyle ? (
+            <View
+              pointerEvents="none"
+              style={[
+                styles.guideScreenTint,
+                { backgroundColor: guideStyle.screenTint },
+              ]}
+            />
+          ) : null}
+    
+            <TouchableOpacity
+              style={styles.homeButton}
+              onPress={() => router.push('/GuideScreen')}
+              activeOpacity={0.85}
+            >
+              <Image source={HOME_ICON} style={styles.homeIcon} contentFit="contain" />
+            </TouchableOpacity>
+
+            {guideStyle ? (
+              <GuideCard
+                guideStyle={guideStyle}
+                isRelevant={isCurrentYearRelevant}
+                onExitGuide={() => {
+                  router.replace('/');
+                }}
+              />
+            ) : (
+              <LegendCard />
+            )}
+                
           <View style={{ flexDirection: 'column', gap: 20 }}>
             <View style={styles.eraCard}>
               <Text style={[styles.eraYear, { color: selectedEra.color }]}>
@@ -374,9 +479,9 @@ export default function TimelineScreen({
   
               <Text style={styles.eraSummary}>{selectedEraDefinition.summary}</Text>
             </View>
-            <PoiButton
-            description={borderDescription}
-              />
+          {borderDescription && (
+           <PoiButton description={borderDescription} />
+            )}
           </View>
             {visibleHotspots.map((poi) => {
               const position = HOTSPOT_POSITIONS[poi.id];
@@ -437,7 +542,8 @@ export default function TimelineScreen({
           <View style={styles.timelinePanel}>
             <TimelineScrubber
               key={`timeline-${initialYear}`}
-              items={ERA_ITEMS}
+              items={timelineItems}
+              activeGuide={activeGuide}
               initialIndex={initialYear != null ? getIndexFromYear(initialYear) : DEFAULT_INDEX}
               maxGapYears={40}
               pixelsPerYear={3.8}
@@ -468,6 +574,7 @@ const styles = StyleSheet.create({
     paddingTop: 18,
     overflow: 'hidden',
     zIndex: 1,
+    position: 'relative',
   },
 
   backgroundImage: {
@@ -605,5 +712,40 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     zIndex: 10,
     backgroundColor: '#D3DCCD',
+  },
+  guideScreenTint: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 2,
+  },
+  
+  guideChip: {
+    position: 'absolute',
+    top: 24,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: '#ffffff',
+    borderWidth: 3,
+    zIndex: 6,
+  },
+  
+  guideChipDot: {
+    width: 10,
+    height: 10,
+    transform: [{ rotate: '45deg' }],
+    backgroundColor: '#ffffff',
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    marginRight: 8,
+  },
+  
+  guideChipText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#2F3437',
   },
 });

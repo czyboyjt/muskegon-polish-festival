@@ -7,17 +7,20 @@ import Animated, {
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated';
+import { QuizResultColors } from '@/constants/theme';
 
 export type TimelineItem = {
   id: string;
   year: number;
   label: string;
   color?: string;
+  isRelevant?:boolean;
 };
 
 type TimelineScrubberProps = {
   items: TimelineItem[];
   initialIndex?: number;
+  activeGuide?: string;
   maxGapYears?: number;
   pixelsPerYear?: number;
   minGapPixels?: number;
@@ -34,6 +37,25 @@ const BAR_TOP = 68;
 const BAR_HEIGHT = 20;
 const GESTURE_ACTIVE_TOP = BAR_TOP + 2;
 const GESTURE_ACTIVE_BOTTOM = BAR_TOP + DOT_SIZE + 4;
+
+const GUIDE_STYLES: Record<string, { accent: string; screenTint: string }> = {
+  Culture: {
+    accent: QuizResultColors.educatorGold,
+    screenTint: 'rgba(155, 88, 2, 0.05)',
+  },
+  Hero: {
+    accent: QuizResultColors.writerBlue,
+    screenTint: QuizResultColors.writerBlue + '0A',
+  },
+  Adventurer: {
+    accent: QuizResultColors.explorerRed,
+    screenTint: QuizResultColors.explorerRed + '0A',
+  },
+  Crafter: {
+    accent: QuizResultColors.crafterGreen,
+    screenTint: QuizResultColors.crafterGreen + '0A',
+  },
+};
 
 function buildPositions(
   items: TimelineItem[],
@@ -57,9 +79,11 @@ function buildPositions(
   return positions;
 }
 
+;
 export function TimelineScrubber({
   items,
   initialIndex = 0,
+  activeGuide,
   maxGapYears = 40,
   pixelsPerYear = 4.4,
   minGapPixels = 18,
@@ -70,6 +94,7 @@ export function TimelineScrubber({
   const [activeIndex, setActiveIndex] = useState(Math.min(initialIndex, Math.max(items.length - 1, 0)));
   const [windowStartYear, setWindowStartYear] = useState(items[0]?.year ?? 0);
   const canHandlePanRef = useRef(false);
+  const guideStyle = activeGuide ? GUIDE_STYLES[activeGuide] : null;
 
   const positions = useMemo(
     () => buildPositions(items, pixelsPerYear, maxGapYears, minGapPixels),
@@ -301,6 +326,7 @@ export function TimelineScrubber({
   const isPreviousDisabled = windowStartYear <= minYear;
   const isNextDisabled = windowStartYear >= maxWindowStartYear;
 
+
   return (
     <View style={styles.root} onLayout={onContainerLayout}>
       <Pressable
@@ -327,8 +353,19 @@ export function TimelineScrubber({
               const segmentLeft = markerXByIndex[previousIndex] ?? TRACK_HORIZONTAL_PADDING;
               const segmentRight = markerXByIndex[currentIndex] ?? segmentLeft;
               const segmentWidth = Math.max(segmentRight - segmentLeft, 2);
+              const currentItem = items[currentIndex];
+              const previousItem = items[previousIndex];
+
+              const isSegmentRelevant =
+                currentItem?.isRelevant !== false ||
+                previousItem?.isRelevant !== false;
               const segmentColor =
                 items[currentIndex]?.color ?? items[previousIndex]?.color ?? DEFAULT_ERA_COLOR;
+              const isSegmentDimmed =
+                items[currentIndex]?.isRelevant === false &&
+                items[previousIndex]?.isRelevant === false;
+                
+
 
               return (
                 <View
@@ -339,6 +376,7 @@ export function TimelineScrubber({
                       left: segmentLeft,
                       width: segmentWidth,
                       backgroundColor: segmentColor,
+                      opacity: isSegmentRelevant ? 1 : 0.8,
                     },
                   ]}
                 />
@@ -363,13 +401,53 @@ export function TimelineScrubber({
               const markerLeft = markerXByIndex[index] ?? TRACK_HORIZONTAL_PADDING;
               const isActive = index === activeIndex;
               const showYearLabel = !isActive;
+              const isDimmed = item.isRelevant === false;
+              const isRelevant = item.isRelevant !== false;
 
               return (
-                <View key={item.id} style={[styles.marker, { left: markerLeft }]}> 
-                  <View style={[styles.dot, isActive ? styles.activeDot : styles.inactiveDot]} />
-                  {showYearLabel ? (
-                    <Text style={[styles.yearLabel, isActive && styles.activeYearLabel]}>{item.year}</Text>
+                <View style={[styles.marker, { left: markerLeft }]}>
+                  {isRelevant ? (
+                    <>
+                       <View style={styles.relevantHalo} />
+                       <View
+                        style={[
+                          styles.relevantMarkerAccent,
+                          { backgroundColor: guideStyle?.accent ?? item.color },
+                        ]}
+                      />
+                     </>
                   ) : null}
+                <View
+                  style={[
+                    styles.dot,
+                    isActive ? styles.activeDot : styles.inactiveDot,
+                    {
+                      opacity: item.isRelevant === false ? 1 : 1,
+                      transform: [{ scale: isRelevant ? 1.12 : 1 }],
+                      borderColor: isRelevant ? '#ffffff' : 'rgba(255,255,255,0.5)',
+                      borderWidth: isRelevant ? 2.5 : 1,
+                      backgroundColor: isRelevant ? (item.color ?? '#ffffff') : '#D7D7D7',
+                      shadowColor: item.color ?? '#000',
+                      shadowOpacity: isRelevant ? 0.25 : 0,
+                      shadowRadius: isRelevant ? 6 : 0,
+                      shadowOffset: { width: 0, height: 0 },
+
+                    },
+                  ]}
+                />
+                  {showYearLabel ? (
+                    <Text
+                    style={[
+                      styles.yearLabel,
+                      isActive && styles.activeYearLabel,
+                      {
+                        opacity: isRelevant ? 1 : 0.65,
+                        fontWeight: isRelevant ? '700' : '500',
+                      },
+                    ]}
+                    >
+                      {item.year}
+                    </Text>) : null}
                 </View>
               );
             })}
@@ -378,14 +456,14 @@ export function TimelineScrubber({
       </GestureDetector>
 
       <Animated.View style={[styles.activePill, activePillStyle]} pointerEvents="none">
-        <View
-          style={[
-            styles.activePillBackground,
-            { backgroundColor: items[activeIndex]?.color ?? DEFAULT_ERA_COLOR },
-          ]}>
-          <Text style={styles.activePillText}>{items[activeIndex]?.year}</Text>
-        </View>
-      </Animated.View>
+  <View
+    style={[
+      styles.activePillBackground,
+      { backgroundColor: items[activeIndex]?.color ?? DEFAULT_ERA_COLOR },
+    ]}>
+    <Text style={styles.activePillText}>{items[activeIndex]?.year}</Text>
+  </View>
+</Animated.View>
     </View>
   );
 }
@@ -483,5 +561,24 @@ const styles = StyleSheet.create({
   },
   disabledArrow: {
     opacity: 0.25,
+  },
+  relevantHalo: {
+    position: 'absolute',
+    top: -6,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: 'rgba(255,255,255,0.18)',
+  },
+  relevantMarkerAccent: {
+    position: 'absolute',
+    top: -24,
+    width: 12,
+    height: 12,
+    transform: [{ rotate: '45deg' }],
+    backgroundColor: '#ffffff',
+    borderRadius: 2,
+    borderWidth: 2,
+    borderColor: '#ffffff',
   },
 });
