@@ -421,8 +421,9 @@ export default function TimelineScreen({
 
     const [selectedIndex, setSelectedIndex] = useState(initialIndex);
     const currentItem = ERA_ITEMS[selectedIndex] ?? ERA_ITEMS[0];
-    const borderDescription = BORDER_CHANGE_BY_YEAR[currentItem.year];
-    const guideStyle = activeGuide ? GUIDE_STYLES[activeGuide] : undefined;
+    const borderDescription =
+      BORDER_CHANGE_BY_YEAR[currentItem.year];
+  
     useEffect(() => {
       setSelectedIndex(initialIndex);
     }, [initialIndex]);
@@ -578,9 +579,9 @@ export default function TimelineScreen({
   
               <Text style={styles.eraSummary}>{selectedEraDefinition.summary}</Text>
             </View>
-          {borderDescription && (
-           <PoiButton description={borderDescription} />
-            )}
+            {borderDescription && (
+            <PoiButton description={borderDescription} />
+              )}
           </View>
             {visibleHotspots.map((poi) => {
               const position = HOTSPOT_POSITIONS[poi.id];
