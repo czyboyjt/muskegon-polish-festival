@@ -12,6 +12,7 @@ import { HOTSPOT_POSITIONS } from '@/constants/hotspotPositions';
 import GuideCard from '../GuideCard';
 import LegendCard from '../LegendCard';
 import GuideLegendModal from '../GuideLegendModal';
+import GuideIntroModal from '../GuideIntroModal';
 
 const HOME_ICON = require('@/assets/General_Icons/ Home_icon.svg');
 
@@ -393,6 +394,7 @@ export default function TimelineScreen({
 
   const [guideModalVisible, setGuideModalVisible] = useState(false);
   const [hasShownGuideIntro, setHasShownGuideIntro] = useState(false);
+  const [showGuideIntro, setShowGuideIntro] = useState(false);
 
   const confirmEndJourney = useCallback(() => {
     resetExperience();
@@ -425,12 +427,13 @@ export default function TimelineScreen({
       setSelectedIndex(initialIndex);
     }, [initialIndex]);
 
-      useEffect(() => {
-        if (activeGuide && guideStyle && !hasShownGuideIntro) {
-          setGuideModalVisible(true);
-          setHasShownGuideIntro(true);
-        }
-      }, [activeGuide, guideStyle, hasShownGuideIntro]);
+
+    useEffect(() => {
+      if (activeGuide && guideStyle && !hasShownGuideIntro) {
+        setShowGuideIntro(true);
+        setHasShownGuideIntro(true);
+      }
+    }, [activeGuide, guideStyle, hasShownGuideIntro]);
 
 
     const selectedItem = timelineItems[selectedIndex];
@@ -474,6 +477,17 @@ export default function TimelineScreen({
         onContinue={confirmEndJourney}
         onRequestClose={() => setEndJourneyModalVisible(false)}
       />
+
+      {guideStyle ? (
+        <GuideIntroModal
+          visible={showGuideIntro}
+          guideLabel={guideStyle.label}
+          guideColor={guideStyle.color}
+          guideDescription={guideStyle.description}
+          legendItems={LEGEND_ITEMS}
+          onStartExploring={() => setShowGuideIntro(false)}
+        />
+      ) : null}
 
       <GuideLegendModal
         visible={guideModalVisible}
@@ -534,12 +548,11 @@ export default function TimelineScreen({
             <GuideCard
               guideStyle={guideStyle}
               isRelevant={isCurrentYearRelevant}
-              onPress={() => setGuideModalVisible(true)}
+              legendItems={LEGEND_ITEMS}
             />
           ) : (
-            <LegendCard onPress={() => setGuideModalVisible(true)} />
+            <LegendCard legendItems={LEGEND_ITEMS} />
           )}
-
             
                 
           <View style={{ flexDirection: 'column', gap: 20 }}>

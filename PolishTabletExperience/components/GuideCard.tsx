@@ -1,5 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image } from 'expo-image';
+
+type LegendItem = {
+  key: string;
+  label: string;
+  description: string;
+  iconSource: number;
+};
 
 type GuideCardProps = {
   guideStyle?: {
@@ -10,23 +18,26 @@ type GuideCardProps = {
     focusesOn?: string[];
   } | null;
   isRelevant?: boolean;
-  onPress?: () => void;
+  legendItems: LegendItem[];
 };
 
 export default function GuideCard({
   guideStyle,
   isRelevant = false,
-  onPress,
+  legendItems,
 }: GuideCardProps) {
+  const [expanded, setExpanded] = useState(false);
+
   if (!guideStyle) return null;
 
   return (
     <View style={styles.wrapper}>
       <Pressable
-        onPress={onPress}
+        onPress={() => setExpanded((prev) => !prev)}
         style={[
           styles.card,
           {
+            width: expanded ? 320 : 220,
             borderColor: isRelevant
               ? guideStyle.color
               : guideStyle.chipBorder ?? 'rgba(255,255,255,0.2)',
@@ -65,9 +76,45 @@ export default function GuideCard({
             >
               {guideStyle.label}
             </Text>
-            <Text style={styles.subtitle}>Tap to learn more</Text>
+            <Text style={styles.subtitle}>
+              {expanded ? 'Tap to close' : 'Tap to learn more'}
+            </Text>
           </View>
         </View>
+
+        {expanded ? (
+          <View style={styles.expandedContent}>
+            {guideStyle.description ? (
+              <Text style={styles.description}>
+                {guideStyle.description}
+              </Text>
+            ) : null}
+
+            {guideStyle.focusesOn?.length ? (
+              <View style={styles.section}>
+                <Text style={styles.sectionLabel}>This guide focuses on</Text>
+                {guideStyle.focusesOn.map((item) => (
+                  <Text key={item} style={styles.bulletText}>
+                    • {item}
+                  </Text>
+                ))}
+              </View>
+            ) : null}
+
+            <View style={styles.section}>
+              <Text style={styles.sectionLabel}>Map icons</Text>
+              {legendItems.map((item) => (
+                <View key={item.key} style={styles.legendRow}>
+                  <Image source={item.iconSource} style={styles.legendIcon} contentFit="contain" />
+                  <View style={{ flex: 1 }}>
+                    <Text style={styles.legendLabel}>{item.label}</Text>
+                    <Text style={styles.legendDescription}>{item.description}</Text>
+                  </View>
+                </View>
+              ))}
+            </View>
+          </View>
+        ) : null}
       </Pressable>
     </View>
   );
@@ -81,7 +128,6 @@ const styles = StyleSheet.create({
     zIndex: 20,
   },
   card: {
-    width: 220,
     borderRadius: 20,
     borderWidth: 1.5,
     padding: 16,
@@ -113,6 +159,54 @@ const styles = StyleSheet.create({
     marginTop: 2,
     fontSize: 10,
     color: '#6A7175',
+  },
+  expandedContent: {
+    marginTop: 14,
+    paddingTop: 14,
+    borderTopWidth: 1,
+    borderTopColor: 'rgba(0,0,0,0.08)',
+  },
+  description: {
+    fontSize: 14,
+    lineHeight: 21,
+    color: '#42484a',
+  },
+  section: {
+    marginTop: 14,
+  },
+  sectionLabel: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#2F3437',
+    marginBottom: 8,
+  },
+  bulletText: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: '#515558',
+    marginBottom: 2,
+  },
+  legendRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 10,
+    marginBottom: 10,
+  },
+  legendIcon: {
+    width: 22,
+    height: 22,
+    marginTop: 2,
+  },
+  legendLabel: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#2F3437',
+  },
+  legendDescription: {
+    marginTop: 2,
+    fontSize: 12,
+    lineHeight: 17,
+    color: '#515558',
   },
   relevantLabel: {
     marginBottom: 2,
