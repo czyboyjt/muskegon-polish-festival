@@ -9,27 +9,42 @@ type LegendItem = {
   iconSource: number;
 };
 
-type LegendModalProps = {
+type GuideLegendModalProps = {
   visible: boolean;
+  title: string;
+  subtitle: string;
+  accentColor?: string;
+  description?: string;
   legendItems: LegendItem[];
+  buttonLabel?: string;
   onClose: () => void;
 };
 
-export default function LegendModal({
+export default function GuideLegendModal({
   visible,
+  title,
+  subtitle,
+  accentColor = '#2F3437',
+  description,
   legendItems,
+  buttonLabel = 'Close',
   onClose,
-}: LegendModalProps) {
+}: GuideLegendModalProps) {
   return (
     <Modal visible={visible} transparent animationType="fade">
       <View style={styles.overlay}>
         <View style={styles.card}>
           <View style={styles.headerRow}>
-            <View>
-              <Text style={styles.title}>Legend</Text>
-              <Text style={styles.subtitle}>Map icons and what they mean</Text>
+            <View style={[styles.dot, { backgroundColor: accentColor, borderColor: accentColor }]} />
+            <View style={{ flex: 1 }}>
+              <Text style={styles.subtitleText}>{subtitle}</Text>
+              <Text style={[styles.title, { color: accentColor }]}>{title}</Text>
             </View>
           </View>
+
+          {description ? <Text style={styles.description}>{description}</Text> : null}
+
+          <Text style={styles.sectionTitle}>Map icons</Text>
 
           <View style={styles.legendList}>
             {legendItems.map((item) => (
@@ -43,8 +58,11 @@ export default function LegendModal({
             ))}
           </View>
 
-          <Pressable style={styles.closeButton} onPress={onClose}>
-            <Text style={styles.closeButtonText}>Close</Text>
+          <Pressable
+            style={[styles.primaryButton, { backgroundColor: accentColor }]}
+            onPress={onClose}
+          >
+            <Text style={styles.primaryButtonText}>{buttonLabel}</Text>
           </Pressable>
         </View>
       </View>
@@ -62,7 +80,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    maxWidth: 520,
+    maxWidth: 560,
     borderRadius: 24,
     backgroundColor: 'rgba(255,255,255,0.98)',
     padding: 24,
@@ -72,20 +90,42 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 6 },
   },
   headerRow: {
-    marginBottom: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  dot: {
+    width: 14,
+    height: 14,
+    borderRadius: 3,
+    transform: [{ rotate: '45deg' }],
+    marginRight: 12,
+    borderWidth: 2,
+  },
+  subtitleText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#6A7175',
+    marginBottom: 2,
   },
   title: {
-    fontSize: 26,
+    fontSize: 28,
     fontWeight: '800',
-    color: '#2F3437',
   },
-  subtitle: {
-    marginTop: 4,
-    fontSize: 14,
-    color: '#6A7175',
+  description: {
+    fontSize: 16,
+    lineHeight: 24,
+    color: '#42484A',
+    marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: '#2F3437',
+    marginBottom: 12,
   },
   legendList: {
-    gap: 14,
+    gap: 12,
   },
   legendRow: {
     flexDirection: 'row',
@@ -108,17 +148,16 @@ const styles = StyleSheet.create({
     lineHeight: 20,
     color: '#515558',
   },
-  closeButton: {
+  primaryButton: {
     alignSelf: 'flex-start',
     marginTop: 24,
-    paddingHorizontal: 18,
-    paddingVertical: 11,
+    paddingHorizontal: 20,
+    paddingVertical: 12,
     borderRadius: 999,
-    backgroundColor: '#2F3437',
   },
-  closeButtonText: {
+  primaryButtonText: {
     color: '#FFFFFF',
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: '700',
   },
 });

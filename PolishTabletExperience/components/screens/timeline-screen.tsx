@@ -11,8 +11,7 @@ import { EraKey, POI_DETAILS } from '@/constants/contentData';
 import { HOTSPOT_POSITIONS } from '@/constants/hotspotPositions';
 import GuideCard from '../GuideCard';
 import LegendCard from '../LegendCard';
-import GuideIntroModal from '../GuideIntroModal';
-import LegendModal from '../LegendModal';
+import GuideLegendModal from '../GuideLegendModal';
 
 const HOME_ICON = require('@/assets/General_Icons/ Home_icon.svg');
 
@@ -392,8 +391,8 @@ export default function TimelineScreen({
   const { resetExperience } = useVisited();
   const [endJourneyModalVisible, setEndJourneyModalVisible] = useState(false);
 
-  const [showGuideIntro, setShowGuideIntro] = useState(false);
-  const [showLegendModal, setShowLegendModal] = useState(false);
+  const [guideModalVisible, setGuideModalVisible] = useState(false);
+  const [hasShownGuideIntro, setHasShownGuideIntro] = useState(false);
 
   const confirmEndJourney = useCallback(() => {
     resetExperience();
@@ -426,13 +425,12 @@ export default function TimelineScreen({
       setSelectedIndex(initialIndex);
     }, [initialIndex]);
 
-    useEffect(() => {
-      if (activeGuide && guideStyle) {
-        setShowGuideIntro(true);
-      } else {
-        setShowGuideIntro(false);
-      }
-    }, [activeGuide, guideStyle]);
+      useEffect(() => {
+        if (activeGuide && guideStyle && !hasShownGuideIntro) {
+          setGuideModalVisible(true);
+          setHasShownGuideIntro(true);
+        }
+      }, [activeGuide, guideStyle, hasShownGuideIntro]);
 
 
     const selectedItem = timelineItems[selectedIndex];
@@ -477,21 +475,18 @@ export default function TimelineScreen({
         onRequestClose={() => setEndJourneyModalVisible(false)}
       />
 
-      {guideStyle ? (
-        <GuideIntroModal
-          visible={showGuideIntro}
-          guideLabel={guideStyle.label}
-          guideColor={guideStyle.color}
-          guideDescription={guideStyle.description}
-          legendItems={LEGEND_ITEMS}
-          onStartExploring={() => setShowGuideIntro(false)}
-        />
-      ) : null}
-
-      <LegendModal
-        visible={showLegendModal}
+      <GuideLegendModal
+        visible={guideModalVisible}
+        title={guideStyle ? guideStyle.label : 'Legend'}
+        subtitle={guideStyle ? 'Your journey begins' : 'Map legend'}
+        accentColor={guideStyle?.color ?? '#2F3437'}
+        description={
+          guideStyle?.description ??
+          'Explore the map and use these icons to discover stories throughout each era.'
+        }
         legendItems={LEGEND_ITEMS}
-        onClose={() => setShowLegendModal(false)}
+        buttonLabel={guideStyle ? 'Start Exploring' : 'Close'}
+        onClose={() => setGuideModalVisible(false)}
       />
 
       <SafeAreaView style={styles.container}>
@@ -535,18 +530,15 @@ export default function TimelineScreen({
             </TouchableOpacity>
           </View>
 
-            {guideStyle ? (
-              <GuideCard
-                guideStyle={guideStyle}
-                isRelevant={isCurrentYearRelevant}
-                onOpenLegend={() => setShowLegendModal(true)}
-                onExitGuide={() => {
-                  router.replace('/');
-                }}
-              />
-            ) : (
-              <LegendCard onPress={() => setShowLegendModal(true)} />
-            )}
+          {guideStyle ? (
+            <GuideCard
+              guideStyle={guideStyle}
+              isRelevant={isCurrentYearRelevant}
+              onPress={() => setGuideModalVisible(true)}
+            />
+          ) : (
+            <LegendCard onPress={() => setGuideModalVisible(true)} />
+          )}
 
             
                 
