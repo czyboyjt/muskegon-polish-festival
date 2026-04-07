@@ -405,7 +405,10 @@ export function TimelineScrubber({
               const isRelevant = item.isRelevant !== false;
 
               return (
-                <View style={[styles.marker, { left: markerLeft }]}>
+                <View
+                  key={`${item.id}-marker`}
+                  style={[styles.marker, { left: markerLeft }]}
+                >
                   {isRelevant ? (
                     <>
                        <View style={styles.relevantHalo} />
