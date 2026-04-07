@@ -11,12 +11,14 @@ type GuideCardProps = {
   } | null;
   isRelevant?: boolean;
   onExitGuide?: () => void;
+  onOpenLegend?: () => void;
 };
 
 export default function GuideCard({
   guideStyle,
   isRelevant = false,
   onExitGuide,
+  onOpenLegend,
 }: GuideCardProps) {
   const [expanded, setExpanded] = useState(false);
 
@@ -100,7 +102,7 @@ export default function GuideCard({
 
             <View style={styles.actionRow}>
               <Pressable
-                onPress={() => {}}
+                onPress={onOpenLegend}
                 style={styles.secondaryButton}
               >
                 <Text style={styles.secondaryButtonText}>

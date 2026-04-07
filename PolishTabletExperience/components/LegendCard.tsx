@@ -1,31 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-type GuideCardProps = {
-  guideStyle?: {
-    label: string;
-    color: string;
-    chipBorder?: string;
-    description?: string;
-    focusesOn?: string[];
-  } | null;
-  isRelevant?: boolean;
-  onExitGuide?: () => void;
+type LegendCardProps = {
+  onPress?: () => void;
 };
 
-export default function LegendCard({
-  isRelevant = false,
-  onExitGuide,
-}: GuideCardProps) {
-  const [expanded, setExpanded] = useState(false);
-
+export default function LegendCard({ onPress }: LegendCardProps) {
   return (
     <View style={styles.wrapper}>
       <Pressable
+        onPress={onPress}
         style={[
           styles.card,
           {
-            borderColor:'rgba(255,255,255,0.2)',
+            borderColor: 'rgba(255,255,255,0.2)',
             borderWidth: 1.5,
             backgroundColor: 'rgba(255,255,255,0.92)',
           },
@@ -33,17 +21,8 @@ export default function LegendCard({
       >
         <View style={styles.headerRow}>
           <View style={styles.headerTextWrap}>
-          <Text
-              style={[
-                styles.title,
-                { color: '#2F3437' },
-              ]}
-            >
-              Legend
-            </Text>
-            <Text style={styles.subtitle}>
-              Tap to see more
-            </Text>
+            <Text style={styles.title}>Legend</Text>
+            <Text style={styles.subtitle}>Tap to see more</Text>
           </View>
         </View>
       </Pressable>
