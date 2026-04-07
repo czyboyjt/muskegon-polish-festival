@@ -3,11 +3,14 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Image } from 'expo-image';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { QuizResultColors } from '@/constants/theme';
 
 import { TimelineItem, TimelineScrubber } from '@/components/timeline-scrubber';
-import { FontFamily, MainColors } from '@/constants/theme';
+import { EraColors, EraTabTheme, FontFamily, MainColors } from '@/constants/theme';
 import { EraKey, POI_DETAILS } from '@/constants/contentData';
 import { HOTSPOT_POSITIONS } from '@/constants/hotspotPositions';
+import GuideCard from '../GuideCard';
+import LegendCard from '../LegendCard';
 
 const HOME_ICON = require('@/assets/General_Icons/ Home_icon.svg');
 
@@ -18,6 +21,7 @@ import PoiButton from '../PoiButton';
 
 
 type EraDefinition = {
+  eraKey: EraKey;
   name: string;
   summary: string;
   timeframe: string;
@@ -30,101 +34,117 @@ type TimelineScreenProps = {
   onPressContent?: (era: EraKey) => void;
   onTimelineYearChange?: (year: number) => void;
   initialYear?: number;
+  activeGuide?: string;
 };
 
 const ERA_DEFINITIONS: EraDefinition[] = [
   {
-    name: 'The Golden Age',
+    eraKey: 'golden_age',
+    name: EraTabTheme.golden_age.label,
     summary: 'A time of political strength, cultural flourishing, and territorial expansion.',
     timeframe: 'Late 15th — Mid-17th Century',
     years: [1635, 1653],
-    color: '#6E5A12',
+    color: EraColors.golden_age,
   },
   {
+    eraKey: 'wars_partitions',
     name: 'The Silver Age & Era of Wars',
     summary: 'Marked by wars, weakening government, and foreign interference.',
     timeframe: 'Late 17th — 19th Century',
     years: [1686, 1699, 1701, 1713, 1721, 1742],
-    color: '#3E642B',
+    color: EraColors.wars_partitions,
   },
   {
+    eraKey: 'wars_partitions',
     name: 'Silver Age & Era of Wars: First Partition',
     summary: 'Marked by wars, weakening government, and foreign interference.',
     timeframe: 'Late 17th — 19th Century',
     years: [1772, 1792],
-    color: '#3E642B',
+    color: EraColors.wars_partitions,
   },
     {
+    eraKey: 'wars_partitions',
     name: 'Silver Age & Era of Wars: Second Partition',
     summary: 'Marked by wars, weakening government, and foreign interference.',
     timeframe: 'Late 17th — 19th Century',
     years: [1793],
-    color: '#3E642B',
+    color: EraColors.wars_partitions,
   },
   {
+    eraKey: 'wars_partitions',
     name: 'Silver Age & Era of Wars: Third Partition',
     summary: 'Marked by wars, weakening government, and foreign interference.',
     timeframe: 'Late 17th — 19th Century',
     years: [1795],
-    color: '#3E642B',
+    color: EraColors.wars_partitions,
   },
   {
-    name: 'Struggle for Independence',
+    eraKey: 'independence',
+    name: EraTabTheme.independence.label,
     summary: 'A century of failed uprisings and growing nationalism.',
     timeframe: '19th Century — WW1',
     years: [1804, 1807, 1815, 1831, 1846, 1848, 1862, 1867, 1871, 1878, 1884, 1894, 1904],
-    color: '#5E4E95',
+    color: EraColors.independence,
   },
   {
-    name: 'Rebirth of Poland',
+    eraKey: 'rebirth',
+    name: EraTabTheme.rebirth.label,
     summary: 'Poland regained its independence and rebuilt itself as a sovereign state.',
     timeframe: '1914 — 1939',
     years: [1914, 1917, 1918, 1919, 1920, 1921, 1924, 1933, 1938],
-    color: '#6F563E',
+    color: EraColors.rebirth,
   },
   {
-    name: 'World War II & Occupation',
+    eraKey: 'ww2',
+    name: EraTabTheme.ww2.label,
     summary: 'Poland was invaded and divided between Nazi Germany and the Soviet Union.',
     timeframe: '1939 — 1945',
     years: [1939, 1940, 1942, 1944],
-    color: '#3B6583',
+    color: EraColors.ww2,
   },
   {
+    eraKey: 'communist',
     name: 'Liberation & Reorganization',
     summary: 'N/A',
     timeframe: '1945 — 1948',
     years: [1945],
-    color: '#3F6E8E',
+    color: EraColors.liberation,
   },
   {
-    name: 'Communist Poland',
+    eraKey: 'communist',
+    name: EraTabTheme.communist.label,
     summary: 'Communist Poland under Soviet influence.',
     timeframe: '1948 — 1980',
     years: [1948, 1951, 1960, 1970],
-    color: '#8B5E4A',
+    color: EraColors.communist,
   },
     {
+    eraKey: 'communist',
     name: 'Growing Discontent',
     summary: 'N/A',
     timeframe: '1980 — 1989',
     years: [1980, 1985],
-    color: '#6F5A8F',
+    color: EraColors.growingDiscontent,
   },
   {
-    name: 'Modern Poland',
+    eraKey: 'modern',
+    name: EraTabTheme.modern.label,
     summary: 'Where we are today: a democratic republic and member of the EU and NATO.',
     timeframe: '1989 — Present',
     years: [1989, 1993, 2002, 2009],
-    color: '#0F766E',
+    color: EraColors.modern,
   },
 ];
 
-const ERA_ITEMS: TimelineItem[] = ERA_DEFINITIONS.flatMap((era) =>
+type TimelineEraItem = TimelineItem & { eraKey: EraKey };
+
+const ERA_ITEMS: TimelineEraItem[] = ERA_DEFINITIONS.flatMap((era) =>
   era.years.map((year) => ({
     id: `${era.name}-${year}`,
     year,
     label: era.name,
     color: era.color,
+    eraKey: era.eraKey,
   }))
 );
 
@@ -206,6 +226,78 @@ const MAP_BY_FLOOR_YEAR: Array<{ startYear: number; source: number }> = [
   { startYear: 1989, source: MAP_1989 },
   { startYear: 1993, source: MAP_1993 },
 ];
+const GUIDE_LENS: Record<string, number[]> = {
+  Culture: [1635, 1653],
+  Hero: [1772, 1793, 1795],
+  Adventurer: [1939, 1944, 1945],
+  Crafter: [1914, 1918, 1920],
+};
+
+const GUIDE_STYLES: Record<
+  string,
+  {
+    label: string;
+    color: string;
+    screenTint: string;
+    tint: string;
+    description?: string;
+    focusesOn?: string[];
+  }
+> = {
+  Culture: {
+    label: 'The Culture Buff',
+    color: QuizResultColors.educatorGold,
+    screenTint: 'rgba(155, 88, 2, 0.05)',
+    tint: 'rgba(155, 88, 2, 0.01)',
+    description:
+    'A guide for exploring key moments through context, teaching, and historical meaning.',
+  focusesOn: [
+    'historical context',
+    'important turning points',
+    'educational takeaways',]
+  },
+  Hero: {
+    label: 'The Unsung Hero',
+    color: QuizResultColors.writerBlue,
+    screenTint: QuizResultColors.writerBlue + '0A',
+    tint: 'rgba(155, 88, 2, 0.08)',
+    description:
+    'A guide for exploring key moments through context, teaching, and historical meaning.',
+  focusesOn: [
+    'Cultural Resistance',
+    'Everyday Heroes',
+    'Hope for Independence'
+  ]
+  },
+  Adventurer: {
+    label: 'Adventurer',
+    color: QuizResultColors.explorerRed,
+    screenTint: QuizResultColors.explorerRed + '0A',
+    tint: 'rgba(155, 88, 2, 0.08)',
+    description:
+    'A guide for exploring key moments through context, teaching, and historical meaning.',
+  focusesOn: [
+    'Stories of Survival',
+    'Resistance Movements',
+    'Personal Sacrifices'
+
+  ]
+  },
+  Crafter: {
+    label: 'Crafter',
+    color: QuizResultColors.crafterGreen,
+    screenTint: QuizResultColors.crafterGreen + '0A',
+    tint: 'rgba(155, 88, 2, 0.08)',
+    description:
+    'A guide for exploring key moments through context, teaching, and historical meaning.',
+    focusesOn: [
+    'Polish-Soviet War',
+    'Resurgence of National Pride',
+    'Cultural Renaissance'
+
+  ]
+  },
+};
 
 const BORDER_CHANGE_BY_YEAR: Record<number, string> = {
   1635: 'Sweden signed the Treaty of Stuhmsdorf, returning territories to the Polish–Lithuanian Commonwealth.',
@@ -255,27 +347,6 @@ function getEraBackgroundMap(year: number) {
   return MAP_1635;
 }
 
-function getEraKeyFromLabel(label: string): EraKey {
-  switch (label) {
-    case 'The Golden Age':
-      return 'golden_age';
-    case 'The Era of Wars & Partitions':
-      return 'wars_partitions';
-    case 'Struggle for Independence':
-      return 'independence';
-    case 'Rebirth of Poland':
-      return 'rebirth';
-    case 'World War II & Occupation':
-      return 'ww2';
-    case 'Communist Poland':
-      return 'communist';
-    case 'Modern Poland':
-      return 'modern';
-    default:
-      return 'all';
-  }
-}
-
 function getIndexFromYear(year: number) {
   const foundIndex = ERA_ITEMS.findIndex((item) => item.year === year);
   return foundIndex >= 0 ? foundIndex : DEFAULT_INDEX;
@@ -286,6 +357,7 @@ export default function TimelineScreen({
   onPressContent,
   onTimelineYearChange,
   initialYear,
+  activeGuide,
 }: TimelineScreenProps) {
   const router = useRouter();
   const { resetExperience } = useVisited();
@@ -297,6 +369,13 @@ export default function TimelineScreen({
     router.replace('/GuideScreen');
   }, [resetExperience, router]);
 
+  const relevantYears = activeGuide ? GUIDE_LENS[activeGuide] ?? [] : [];
+  const timelineItems = ERA_ITEMS.map((item) => ({
+    ...item,
+    isRelevant: relevantYears.includes(item.year),
+  }));
+  
+  console.log("activeGuide", activeGuide)
   const initialIndex = useMemo(() => {
     if (initialYear != null && !Number.isNaN(initialYear)) {
       const foundIndex = ERA_ITEMS.findIndex((item) => item.year === initialYear);
@@ -309,13 +388,13 @@ export default function TimelineScreen({
 
     const [selectedIndex, setSelectedIndex] = useState(initialIndex);
     const currentItem = ERA_ITEMS[selectedIndex] ?? ERA_ITEMS[0];
-    const borderDescription =
-      BORDER_CHANGE_BY_YEAR[currentItem.year] ?? 'No explanation available yet.';
-  
+    const borderDescription = BORDER_CHANGE_BY_YEAR[currentItem.year];
+    const guideStyle = activeGuide ? GUIDE_STYLES[activeGuide] : undefined;
     useEffect(() => {
       setSelectedIndex(initialIndex);
     }, [initialIndex]);
-  
+    const selectedItem = timelineItems[selectedIndex];
+    const isCurrentYearRelevant = selectedItem?.isRelevant !== false;
 
 
   const selectedEra = useMemo(() => ERA_ITEMS[selectedIndex] ?? ERA_ITEMS[0], [selectedIndex]);
@@ -332,7 +411,7 @@ export default function TimelineScreen({
   };
   const selectedEraMap = useMemo(() => getEraBackgroundMap(selectedEra.year), [selectedEra.year]);
 
-  const targetEraKey = getEraKeyFromLabel(selectedEra.label);
+  const targetEraKey = selectedEra.eraKey;
   
   const visibleHotspots = useMemo(() => {
     if (targetEraKey === 'all') return [];
@@ -370,15 +449,24 @@ export default function TimelineScreen({
             contentPosition="right center"
             pointerEvents="none"
           />
-  
+            {guideStyle ? (
+            <View
+              pointerEvents="none"
+              style={[
+                styles.guideScreenTint,
+                { backgroundColor: guideStyle.screenTint },
+              ]}
+            />
+          ) : null}
+    
           <View style={styles.topBar}>
-            <TouchableOpacity
-              style={styles.homeButton}
-              onPress={() => router.push('/GuideScreen')}
-              activeOpacity={0.85}
-            >
-              <Image source={HOME_ICON} style={styles.homeIcon} contentFit="contain" />
-            </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.homeButton}
+                onPress={() => router.push('/GuideScreen')}
+                activeOpacity={0.85}
+              >
+                <Image source={HOME_ICON} style={styles.homeIcon} contentFit="contain" />
+              </TouchableOpacity>
             <TouchableOpacity
               style={styles.endJourneyButton}
               onPress={() => setEndJourneyModalVisible(true)}
@@ -387,7 +475,19 @@ export default function TimelineScreen({
               <Text style={styles.endJourneyButtonText}>End your journey</Text>
             </TouchableOpacity>
           </View>
-  
+
+            {guideStyle ? (
+              <GuideCard
+                guideStyle={guideStyle}
+                isRelevant={isCurrentYearRelevant}
+                onExitGuide={() => {
+                  router.replace('/');
+                }}
+              />
+            ) : (
+              <LegendCard />
+            )}
+                
           <View style={{ flexDirection: 'column', gap: 20 }}>
             <View style={styles.eraCard}>
               <Text style={[styles.eraYear, { color: selectedEra.color }]}>
@@ -404,9 +504,9 @@ export default function TimelineScreen({
   
               <Text style={styles.eraSummary}>{selectedEraDefinition.summary}</Text>
             </View>
-            <PoiButton
-            description={borderDescription}
-              />
+          {borderDescription && (
+           <PoiButton description={borderDescription} />
+            )}
           </View>
             {visibleHotspots.map((poi) => {
               const position = HOTSPOT_POSITIONS[poi.id];
@@ -467,7 +567,8 @@ export default function TimelineScreen({
           <View style={styles.timelinePanel}>
             <TimelineScrubber
               key={`timeline-${initialYear}`}
-              items={ERA_ITEMS}
+              items={timelineItems}
+              activeGuide={activeGuide}
               initialIndex={initialYear != null ? getIndexFromYear(initialYear) : DEFAULT_INDEX}
               maxGapYears={40}
               pixelsPerYear={3.8}
@@ -498,6 +599,7 @@ const styles = StyleSheet.create({
     paddingTop: 18,
     overflow: 'hidden',
     zIndex: 1,
+    position: 'relative',
   },
 
   backgroundImage: {
@@ -659,5 +761,40 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     zIndex: 10,
     backgroundColor: '#D3DCCD',
+  },
+  guideScreenTint: {
+    ...StyleSheet.absoluteFillObject,
+    zIndex: 2,
+  },
+  
+  guideChip: {
+    position: 'absolute',
+    top: 24,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 14,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: '#ffffff',
+    borderWidth: 3,
+    zIndex: 6,
+  },
+  
+  guideChipDot: {
+    width: 10,
+    height: 10,
+    transform: [{ rotate: '45deg' }],
+    backgroundColor: '#ffffff',
+    borderRadius: 2,
+    borderWidth: 1,
+    borderColor: '#ffffff',
+    marginRight: 8,
+  },
+  
+  guideChipText: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: '#2F3437',
   },
 });
