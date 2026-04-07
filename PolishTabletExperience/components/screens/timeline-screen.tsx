@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState, useCallback } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Image } from 'expo-image';
@@ -15,6 +15,8 @@ import LegendCard from '../LegendCard';
 const HOME_ICON = require('@/assets/General_Icons/ Home_icon.svg');
 
 import MapHotspot from '@/components/MapHotspot';
+import { EndJourneyFullScreen } from '@/components/EndJourneyFullScreen';
+import { useVisited } from '@/components/VisitedContext';
 import PoiButton from '../PoiButton';
 
 
@@ -358,6 +360,14 @@ export default function TimelineScreen({
   activeGuide,
 }: TimelineScreenProps) {
   const router = useRouter();
+  const { resetExperience } = useVisited();
+  const [endJourneyModalVisible, setEndJourneyModalVisible] = useState(false);
+
+  const confirmEndJourney = useCallback(() => {
+    resetExperience();
+    setEndJourneyModalVisible(false);
+    router.replace('/GuideScreen');
+  }, [resetExperience, router]);
 
   const relevantYears = activeGuide ? GUIDE_LENS[activeGuide] ?? [] : [];
   const timelineItems = ERA_ITEMS.map((item) => ({
@@ -419,6 +429,12 @@ export default function TimelineScreen({
 
   return (
     <View style={styles.screen}>
+      <EndJourneyFullScreen
+        visible={endJourneyModalVisible}
+        onContinue={confirmEndJourney}
+        onRequestClose={() => setEndJourneyModalVisible(false)}
+      />
+
       <SafeAreaView style={styles.container}>
         <View style={styles.mapArea}>
           <View style={styles.leftLandWaterLayer} pointerEvents="none">
@@ -443,13 +459,22 @@ export default function TimelineScreen({
             />
           ) : null}
     
+          <View style={styles.topBar}>
+              <TouchableOpacity
+                style={styles.homeButton}
+                onPress={() => router.push('/GuideScreen')}
+                activeOpacity={0.85}
+              >
+                <Image source={HOME_ICON} style={styles.homeIcon} contentFit="contain" />
+              </TouchableOpacity>
             <TouchableOpacity
-              style={styles.homeButton}
-              onPress={() => router.push('/GuideScreen')}
+              style={styles.endJourneyButton}
+              onPress={() => setEndJourneyModalVisible(true)}
               activeOpacity={0.85}
             >
-              <Image source={HOME_ICON} style={styles.homeIcon} contentFit="contain" />
+              <Text style={styles.endJourneyButtonText}>End your journey</Text>
             </TouchableOpacity>
+          </View>
 
             {guideStyle ? (
               <GuideCard
@@ -607,6 +632,30 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     height: '80%',
+  },
+
+  topBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    zIndex: 3,
+  },
+
+  endJourneyButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 26,
+    backgroundColor: MainColors.pointRed,
+    maxWidth: 200,
+  },
+
+  endJourneyButtonText: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    lineHeight: 20,
+    fontFamily: FontFamily.interMedium,
+    textAlign: 'center',
   },
 
   homeButton: {
