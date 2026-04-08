@@ -105,7 +105,7 @@ const ERA_DEFINITIONS: EraDefinition[] = [
     color: EraColors.ww2,
   },
   {
-    eraKey: 'communist',
+    eraKey: 'liberation',
     name: 'Liberation & Reorganization',
     summary: 'N/A',
     timeframe: '1945 — 1948',
@@ -121,7 +121,7 @@ const ERA_DEFINITIONS: EraDefinition[] = [
     color: EraColors.communist,
   },
     {
-    eraKey: 'communist',
+    eraKey: 'growingDiscontent',
     name: 'Growing Discontent',
     summary: 'N/A',
     timeframe: '1980 — 1989',
@@ -544,16 +544,23 @@ export default function TimelineScreen({
             </TouchableOpacity>
           </View>
 
-          {guideStyle ? (
-            <GuideCard
-              guideStyle={guideStyle}
-              isRelevant={isCurrentYearRelevant}
-              legendItems={LEGEND_ITEMS}
-            />
-          ) : (
-            <LegendCard legendItems={LEGEND_ITEMS} />
-          )}
-            
+            {guideStyle ? (
+              <GuideCard
+                guideStyle={guideStyle}
+                isRelevant={isCurrentYearRelevant}
+                legendItems={LEGEND_ITEMS}
+                onExitGuide={() => {
+                  router.replace({
+                    pathname: '/',
+                    params: {
+                      openTimelineAtYear: String(selectedEra.year),
+                    },
+                  });
+                }}
+              />
+            ) : (
+              <LegendCard legendItems={LEGEND_ITEMS} />
+            )}
                 
           <View style={{ flexDirection: 'column', gap: 20 }}>
             <View style={styles.eraCard}>
