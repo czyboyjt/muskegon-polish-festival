@@ -18,8 +18,8 @@ export default function Index() {
       >
         <Text style={[typography.h2, { textAlign: "center", width: width * 0.9,  marginTop: 40 }]}>
         Your Guide: 
-        <Text style={[typography.h2, { color: "#9B5802" }]}> The Culture Buff  </Text>from the{" "}
-        <Text style={[typography.h2, { color: "#9B5802" }]}>
+        <Text style={[typography.h2, { color: "#946C00" }]}> The Culture Buff  </Text>from the{" "}
+        <Text style={[typography.h2, { color: "#946C00" }]}>
         Golden Age
         </Text>
         </Text>
@@ -29,7 +29,7 @@ export default function Index() {
         />
         <Text style={[typography.p, { textAlign: "center", width: width * 0.8
         , marginTop: 20, }]}>
-        Based on your answers, your Polish history guide is <Text style={[typography.pBold, {color: "#9B5802" }]}>The Culture Buff.</Text>
+        Based on your answers, your Polish history guide is <Text style={[typography.pBold, {color: "#946C00" }]}>The Culture Buff.</Text>
         </Text>
         <Text style={[typography.p, { textAlign: "center", width: width * 0.9, marginTop: 20, }]}>
         Explore how Poland flourished during this era, and how it led Europe
@@ -37,7 +37,7 @@ export default function Index() {
         </Text>
 
         {/* What To Do Now */}
-        <Text style={[typography.h3, { textAlign: "center", width: 360, marginTop: 50, color: "#9B5802" }]}>
+        <Text style={[typography.h3, { textAlign: "center", width: 360, marginTop: 50, color: "#946C00" }]}>
         What To Do Now
         </Text>
         <Text style={[typography.p, { textAlign: "center", width: width * 0.9, marginTop: 20 }]}>
@@ -50,7 +50,7 @@ export default function Index() {
 
         {/* Historical Events */}
         <View style = {{width: width * 0.9, backgroundColor: colors.white, height: 140, borderRadius: 20, marginTop: 30, alignItems: "center", justifyContent: "center" }}>
-          <View style ={{width: 64, height: 42, backgroundColor: "#9B5802", borderRadius: 20, position: "absolute", top: -16, left: 0, alignItems: "center", justifyContent: "center"}}>
+          <View style ={{width: 64, height: 42, backgroundColor: "#946C00", borderRadius: 20, position: "absolute", top: -16, left: 0, alignItems: "center", justifyContent: "center"}}>
             <Text style = {[typography.pBold, {color: colors.white, textAlign: "center", width: 64}]}>1635</Text>
           </View>
           <Text style = {[typography.p, {width: width * 0.8}]}>
@@ -61,7 +61,7 @@ export default function Index() {
         </View>
 
         <View style = {{width: width * 0.9, backgroundColor: colors.white, height: 140, borderRadius: 20, marginTop: 30, alignItems: "center", justifyContent: "center" }}>
-        <View style ={{width: 64, height: 42, backgroundColor: "#9B5802", borderRadius: 20, position: "absolute", top: -16, left: 0, alignItems: "center", justifyContent: "center"}}>
+        <View style ={{width: 64, height: 42, backgroundColor: "#946C00", borderRadius: 20, position: "absolute", top: -16, left: 0, alignItems: "center", justifyContent: "center"}}>
             <Text style = {[typography.pBold, {color: colors.white, textAlign: "center", width: 64}]}>1653</Text>
           </View>
           <Text style = {[typography.p, {width: width * 0.8}]}>
@@ -72,7 +72,7 @@ export default function Index() {
         </View>
 
          {/* Take Home Content*/}
-         <Text style={[typography.h3, { textAlign: "center", width: 360, marginTop: 50, color: "#9B5802" }]}>
+         <Text style={[typography.h3, { textAlign: "center", width: 360, marginTop: 50, color: "#946C00" }]}>
         Take Home Content        
         </Text>
         <Text style={[typography.p, { textAlign: "center", width: 350, marginTop: 10, marginBottom: 20, }]}>

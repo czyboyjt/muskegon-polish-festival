@@ -18,8 +18,8 @@ export default function Index() {
       >
         <Text style={[typography.h2, { textAlign: "center", width: width * 0.9,       marginTop: 40 }]}>
         Your Guide: 
-        <Text style={[typography.h2, { color: "#2F702F" }]}> The Crafter </Text>from the{" "}
-        <Text style={[typography.h2, { color: "#2F702F" }]}>
+        <Text style={[typography.h2, { color: "#A7626E" }]}> The Crafter </Text>from the{" "}
+        <Text style={[typography.h2, { color: "#A7626E" }]}>
         Rebirth of Poland
         </Text>
         </Text>
@@ -28,14 +28,14 @@ export default function Index() {
           style={{ width: 260, height: 260, marginTop: 40 }}
         />
         <Text style={[typography.p, { textAlign: "center", width: width * 0.8, marginTop: 20, }]}>
-        Based on your answers, your Polish history guide is <Text style={[typography.pBold, {color: "#2F702F" }]}>The Crafter.</Text>
+        Based on your answers, your Polish history guide is <Text style={[typography.pBold, {color: "#A7626E" }]}>The Crafter.</Text>
         </Text>
         <Text style={[typography.p, { textAlign: "center", width: width * 0.9, marginTop: 20, }]}>
         Discover how Poland rebuilt itself, restoring its independence through hard work, resilience, and a renewed sense of national identity.
         </Text>
 
         {/* What To Do Now */}
-        <Text style={[typography.h3, { textAlign: "center", width: 360, marginTop: 50, color: "#2F702F" }]}>
+        <Text style={[typography.h3, { textAlign: "center", width: 360, marginTop: 50, color: "#A7626E" }]}>
           What To Do Now
         </Text>
         <Text style={[typography.p, { textAlign: "center", width: 360, marginTop: 20 }]}>
@@ -49,7 +49,7 @@ export default function Index() {
 
         {/* Historical Events */}
         <View style = {{width: width * 0.9, backgroundColor: colors.white, height: 140, borderRadius: 20, marginTop: 30, alignItems: "center", justifyContent: "center" }}>
-          <View style ={{width: 64, height: 42, backgroundColor: "#2F702F", borderRadius: 20, position: "absolute", top: -16, left: 0, alignItems: "center", justifyContent: "center"}}>
+          <View style ={{width: 64, height: 42, backgroundColor: "#A7626E", borderRadius: 20, position: "absolute", top: -16, left: 0, alignItems: "center", justifyContent: "center"}}>
             <Text style = {[typography.pBold, {color: colors.white, textAlign: "center", width: 64}]}>1914</Text>
           </View>
           <Text style = {[typography.p, {width: width * 0.8}]}>
@@ -60,7 +60,7 @@ export default function Index() {
         </View>
 
         <View style = {{width: width * 0.9, backgroundColor: colors.white, height: 140, borderRadius: 20, marginTop: 30, alignItems: "center", justifyContent: "center" }}>
-        <View style ={{width: 64, height: 42, backgroundColor: "#2F702F", borderRadius: 20, position: "absolute", top: -16, left: 0, alignItems: "center", justifyContent: "center"}}>
+        <View style ={{width: 64, height: 42, backgroundColor: "#A7626E", borderRadius: 20, position: "absolute", top: -16, left: 0, alignItems: "center", justifyContent: "center"}}>
             <Text style = {[typography.pBold, {color: colors.white, textAlign: "center", width: 64}]}>1918</Text>
           </View>
           <Text style = {[typography.p, {width: width * 0.8}]}>
@@ -71,7 +71,7 @@ export default function Index() {
         </View>
 
         <View style = {{width: width * 0.9, backgroundColor: colors.white, height: 140, borderRadius: 20, marginTop: 30, alignItems: "center", justifyContent: "center" }}>
-        <View style ={{width: 64, height: 42, backgroundColor: "#2F702F", borderRadius: 20, position: "absolute", top: -16, left: 0, alignItems: "center", justifyContent: "center"}}>
+        <View style ={{width: 64, height: 42, backgroundColor: "#A7626E", borderRadius: 20, position: "absolute", top: -16, left: 0, alignItems: "center", justifyContent: "center"}}>
             <Text style = {[typography.pBold, {color: colors.white, textAlign: "center", width: 64}]}>1920</Text>
           </View>
           <Text style = {[typography.p, {width: width * 0.8}]}>
@@ -83,7 +83,7 @@ export default function Index() {
 
 
         {/* Take Home Content */}
-          <Text style={[typography.h3, { textAlign: "center", width: 360, marginTop: 50, color: "#2F702F" }]}>
+          <Text style={[typography.h3, { textAlign: "center", width: 360, marginTop: 50, color: "#A7626E" }]}>
           Take Home Content  
         </Text>
         <Text style={[typography.p, { textAlign: "center", width: 350, marginTop: 10, marginBottom: 20, }]}>

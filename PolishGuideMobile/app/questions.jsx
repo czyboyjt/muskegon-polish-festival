@@ -20,22 +20,22 @@ const GUIDE_ROUTE_BY_LETTER = {
   A: {
     guideName: "The Educator",
     guideRoute: "/guides/EducatorGuide",
-    color: "#9B5802",
+    color: "#946C00",
   },
   B: {
     guideName: "The Writer",
     guideRoute: "/guides/WriterGuide",
-    color: "#4E6CD8",
+    color: "#26874B",
   },
   C: {
     guideName: "The Crafter",
     guideRoute: "/guides/CrafterGuide",
-    color: "#2F702F",
+    color: "#A7626E",
   },
   D: {
     guideName: "The Explorer",
     guideRoute: "/guides/ExplorerGuide",
-    color: "#D83F19",
+    color: "#2878C8",
   },
 };
 
